@@ -44,12 +44,10 @@ body{font-family:'Geist',sans-serif;background:var(--bg);color:var(--text);min-h
 .proj-card:hover .proj-del{opacity:1;}
 .add-proj-card{background:transparent;border:1px dashed var(--border2);border-radius:var(--rl);padding:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;font-size:13px;color:var(--text3);font-family:'Geist',sans-serif;transition:all .15s;}
 .add-proj-card:hover{border-color:var(--accent);color:var(--accent);background:rgba(124,111,255,0.05);}
-
 .board-nav{display:flex;align-items:center;gap:8px;padding:10px 20px;border-bottom:1px solid var(--border);}
 .nav-tab{font-family:'Geist',sans-serif;font-size:12px;font-weight:500;background:transparent;border:1px solid transparent;border-radius:var(--r);cursor:pointer;color:var(--text3);padding:6px 12px;transition:all .15s;}
 .nav-tab:hover{color:var(--text2);}
 .nav-tab.active{background:var(--bg3);border-color:var(--border2);color:var(--text);}
-
 .filter-bar{display:flex;gap:6px;padding:10px 20px;border-bottom:1px solid var(--border);align-items:center;flex-wrap:wrap;}
 .filter-label{font-size:11px;color:var(--text3);margin-right:2px;font-family:'Geist Mono',monospace;text-transform:uppercase;letter-spacing:.5px;}
 .filter-btn{font-family:'Geist',sans-serif;font-size:11px;font-weight:500;border-radius:99px;cursor:pointer;border:1px solid var(--border2);background:transparent;color:var(--text2);padding:4px 10px;transition:all .15s;}
@@ -57,11 +55,17 @@ body{font-family:'Geist',sans-serif;background:var(--bg);color:var(--text);min-h
 .filter-btn.f-high.active{background:var(--high-bg);color:var(--high);border-color:var(--high);}
 .filter-btn.f-mid.active{background:var(--mid-bg);color:var(--mid);border-color:var(--mid);}
 .filter-btn.f-low.active{background:var(--low-bg);color:var(--low);border-color:var(--low);}
-
 .board-wrap{padding:16px 20px;overflow-x:auto;}
 .board{display:flex;gap:10px;min-height:500px;align-items:flex-start;}
-.column{flex:0 0 220px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--rl);display:flex;flex-direction:column;}
+
+/* COLUMN — draggable */
+.column{flex:0 0 220px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--rl);display:flex;flex-direction:column;transition:opacity .15s;}
+.column.col-dragging{opacity:.35;}
+.column.col-drag-over{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent);}
 .col-header{padding:11px 12px 9px;display:flex;align-items:center;gap:6px;border-bottom:1px solid var(--border);}
+.col-drag-handle{cursor:grab;color:var(--text3);font-size:12px;padding:2px 3px;border-radius:4px;line-height:1;user-select:none;flex-shrink:0;}
+.col-drag-handle:hover{color:var(--text2);background:var(--bg4);}
+.col-drag-handle:active{cursor:grabbing;}
 .col-title-wrap{flex:1;display:flex;align-items:center;gap:6px;min-width:0;}
 .col-title{font-size:11px;font-weight:500;text-transform:uppercase;letter-spacing:.6px;width:100%;outline:none;cursor:text;background:transparent;border:none;color:var(--text2);font-family:'Geist Mono',monospace;}
 .col-title:focus{color:var(--text);}
@@ -69,7 +73,7 @@ body{font-family:'Geist',sans-serif;background:var(--bg);color:var(--text);min-h
 .col-del-btn{opacity:0;transition:opacity .15s;flex-shrink:0;}
 .column:hover .col-del-btn{opacity:1;}
 .cards{flex:1;padding:8px;display:flex;flex-direction:column;gap:6px;min-height:40px;}
-.column.drag-over{border-color:var(--accent);background:rgba(124,111,255,0.04);}
+.column.card-drag-over{border-color:var(--accent);background:rgba(124,111,255,0.04);}
 .card{background:var(--bg3);border:1px solid var(--border);border-radius:var(--r);padding:11px 12px;cursor:pointer;transition:border-color .15s;}
 .card:hover{border-color:var(--border2);}
 .card.dragging{opacity:.35;}
@@ -89,7 +93,6 @@ body{font-family:'Geist',sans-serif;background:var(--bg);color:var(--text);min-h
 .add-col-btn{flex:0 0 auto;background:transparent;border:1px dashed var(--border2);border-radius:var(--rl);padding:12px 16px;cursor:pointer;display:flex;align-items:center;gap:6px;font-size:12px;color:var(--text3);font-family:'Geist',sans-serif;transition:all .15s;white-space:nowrap;align-self:flex-start;}
 .add-col-btn:hover{border-color:var(--accent);color:var(--accent);}
 .empty-col{text-align:center;padding:20px 10px;color:var(--text3);font-size:11px;line-height:1.6;}
-
 .cal-wrap{padding:16px 20px;max-width:860px;}
 .cal-header{display:flex;align-items:center;gap:12px;margin-bottom:16px;}
 .cal-month{font-size:16px;font-weight:600;letter-spacing:-.3px;}
@@ -105,7 +108,6 @@ body{font-family:'Geist',sans-serif;background:var(--bg);color:var(--text);min-h
 .cal-task.p-high{background:var(--high-bg);color:var(--high);}
 .cal-task.p-mid{background:var(--mid-bg);color:var(--mid);}
 .cal-task.p-low{background:var(--low-bg);color:var(--low);}
-
 .modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.65);align-items:center;justify-content:center;z-index:100;backdrop-filter:blur(4px);}
 .modal-bg.open{display:flex;}
 .modal{background:var(--bg2);border:1px solid var(--border2);border-radius:var(--rl);padding:22px;width:360px;max-width:95vw;max-height:90vh;overflow-y:auto;}
@@ -152,7 +154,6 @@ body{font-family:'Geist',sans-serif;background:var(--bg);color:var(--text);min-h
       <button class="btn btn-primary" onclick="openCardModal(null)">+ Задача</button>
     </div>
   </div>
-
   <div id="view-board">
     <div class="filter-bar">
       <span class="filter-label">Приоритет</span>
@@ -163,7 +164,6 @@ body{font-family:'Geist',sans-serif;background:var(--bg);color:var(--text);min-h
     </div>
     <div class="board-wrap"><div class="board" id="board"></div></div>
   </div>
-
   <div id="view-calendar" style="display:none;">
     <div class="cal-wrap">
       <div class="cal-header">
@@ -193,17 +193,15 @@ body{font-family:'Geist',sans-serif;background:var(--bg);color:var(--text);min-h
 <script>
 const SB_URL='https://myjsbrroypvagudhhgdq.supabase.co';
 const SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im15anNicnJveXB2YWd1ZGhoZ2RxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgzOTM3ODgsImV4cCI6MjA5Mzk2OTc4OH0.alpw_L3ufwltG2ixvj3wQlk83-eYGlACxpzTQ8sFARI';
-
 const COLORS=['#7c6fff','#4caf7d','#ff5f5f','#f5a623','#4db8ff','#c084fc'];
 const MONTHS=['Январь','Февраль','Март','Апрель','Май','Июнь','Июль','Август','Сентябрь','Октябрь','Ноябрь','Декабрь'];
 const DAYS=['Пн','Вт','Ср','Чт','Пт','Сб','Вс'];
 
 let projects=[],cards=[],columns=[];
-let currentProj=null,currentProjColor='#7c6fff';
-let currentFilter='all',currentView='board';
+let currentProj=null,currentFilter='all',currentView='board';
 let calDate=new Date();
-let dragId=null,modalMode=null,editingId=null;
-let selectedColor=COLORS[0],targetCol=null;
+let dragCardId=null,dragColId=null;
+let modalMode=null,editingId=null,selectedColor=COLORS[0],targetCol=null;
 
 async function api(path,method='GET',body=null){
   const opts={method,headers:{'apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY,'Content-Type':'application/json','Prefer':method==='POST'?'return=representation':''}};
@@ -251,10 +249,8 @@ function renderProjects(){
     loadMeta(p.id);
   });
   const add=document.createElement('button');
-  add.className='add-proj-card';
-  add.innerHTML='+ Новый проект';
-  add.onclick=openProjModal;
-  grid.appendChild(add);
+  add.className='add-proj-card';add.innerHTML='+ Новый проект';
+  add.onclick=openProjModal;grid.appendChild(add);
 }
 
 async function loadMeta(projId){
@@ -269,8 +265,7 @@ async function loadMeta(projId){
 }
 
 async function openProject(projId,name,color){
-  currentProj=projId;currentProjColor=color;
-  currentFilter='all';currentView='board';
+  currentProj=projId;currentFilter='all';currentView='board';
   document.getElementById('screen-projects').classList.remove('active');
   document.getElementById('screen-board').classList.add('active');
   document.getElementById('breadcrumb').innerHTML=
@@ -281,6 +276,8 @@ async function openProject(projId,name,color){
   document.querySelector('[data-filter="all"]').classList.add('active');
   document.getElementById('tab-board').classList.add('active');
   document.getElementById('tab-calendar').classList.remove('active');
+  document.getElementById('view-board').style.display='block';
+  document.getElementById('view-calendar').style.display='none';
   document.getElementById('board').innerHTML='<div class="loading"><div class="spinner"></div> Загрузка...</div>';
   await loadProject(projId);
   renderBoard();
@@ -313,20 +310,24 @@ function renderBoard(){
   const board=document.getElementById('board');
   board.innerHTML='';
   const filtered=currentFilter==='all'?cards:cards.filter(c=>c.priority===currentFilter);
+
   columns.forEach(col=>{
     const colCards=filtered.filter(c=>c.col===col.id);
     const allCount=cards.filter(c=>c.col===col.id).length;
     const el=document.createElement('div');
-    el.className='column';el.dataset.col=col.id;
+    el.className='column';
+    el.dataset.colId=col.id;
+
     el.innerHTML=`
       <div class="col-header">
+        <span class="col-drag-handle" title="Перетащить колонку">&#8942;&#8942;</span>
         <div class="col-title-wrap">
-          <input class="col-title" value="${col.title}" data-colid="${col.id}"
+          <input class="col-title" value="${col.title}"
             onblur="renameCol('${col.id}',this.value)"
             onkeydown="if(event.key==='Enter')this.blur()" />
           <span class="col-count">${colCards.length}${currentFilter!=='all'?'/'+allCount:''}</span>
         </div>
-        <button class="btn-icon col-del-btn" onclick="delCol('${col.id}')" title="Удалить статус">&#x2715;</button>
+        <button class="btn-icon col-del-btn" onclick="delCol('${col.id}')" title="Удалить">&#x2715;</button>
       </div>
       <div class="cards" id="col-${col.id}">
         ${colCards.length===0?'<div class="empty-col">Нет задач</div>':colCards.map(cardHTML).join('')}
@@ -334,56 +335,85 @@ function renderBoard(){
       <div class="col-footer">
         <button class="btn-add-card" onclick="openCardModal('${col.id}')">+ Добавить</button>
       </div>`;
-    el.addEventListener('dragover',e=>{e.preventDefault();el.classList.add('drag-over');});
-    el.addEventListener('dragleave',()=>el.classList.remove('drag-over'));
-    el.addEventListener('drop',e=>{e.preventDefault();el.classList.remove('drag-over');dropCard(col.id);});
+
+    // Card drag-over (for moving cards between columns)
+    el.addEventListener('dragover',e=>{
+      e.preventDefault();
+      if(dragCardId) el.classList.add('card-drag-over');
+      if(dragColId && dragColId!==col.id) el.classList.add('col-drag-over');
+    });
+    el.addEventListener('dragleave',()=>{
+      el.classList.remove('card-drag-over');
+      el.classList.remove('col-drag-over');
+    });
+    el.addEventListener('drop',e=>{
+      e.preventDefault();
+      el.classList.remove('card-drag-over');
+      el.classList.remove('col-drag-over');
+      if(dragCardId) dropCard(col.id);
+      if(dragColId && dragColId!==col.id) dropColumn(col.id);
+    });
+
+    // Column drag (handle only)
+    const handle=el.querySelector('.col-drag-handle');
+    handle.addEventListener('mousedown',()=>{ el.setAttribute('draggable','true'); });
+    el.addEventListener('dragstart',e=>{
+      if(!el.getAttribute('draggable')||el.getAttribute('draggable')==='false') { e.preventDefault(); return; }
+      dragColId=col.id; dragCardId=null;
+      setTimeout(()=>el.classList.add('col-dragging'),0);
+    });
+    el.addEventListener('dragend',()=>{
+      el.setAttribute('draggable','false');
+      el.classList.remove('col-dragging');
+      dragColId=null;
+    });
+
     board.appendChild(el);
   });
+
+  // Card drag listeners
+  board.querySelectorAll('.card').forEach(card=>{
+    card.addEventListener('dragstart',e=>{
+      e.stopPropagation();
+      dragCardId=card.dataset.id; dragColId=null;
+      setTimeout(()=>card.classList.add('dragging'),0);
+    });
+    card.addEventListener('dragend',()=>{ card.classList.remove('dragging'); dragCardId=null; });
+    card.addEventListener('click',()=>openEditCardModal(card.dataset.id));
+  });
+
   const addBtn=document.createElement('button');
   addBtn.className='add-col-btn';addBtn.innerHTML='+ Добавить статус';
   addBtn.onclick=openColModal;board.appendChild(addBtn);
-
-  board.querySelectorAll('.card').forEach(card=>{
-    card.addEventListener('dragstart',()=>{dragId=card.dataset.id;setTimeout(()=>card.classList.add('dragging'),0);});
-    card.addEventListener('dragend',()=>card.classList.remove('dragging'));
-    card.addEventListener('click',()=>openEditCardModal(card.dataset.id));
-  });
-}
-
-function deadlineClass(dl){
-  if(!dl)return'';
-  const today=new Date();today.setHours(0,0,0,0);
-  const d=new Date(dl);
-  const diff=Math.floor((d-today)/(864e5));
-  if(diff<0)return'overdue';
-  if(diff<=3)return'soon';
-  return'';
-}
-
-function fmtDate(dl){
-  if(!dl)return'';
-  const[y,m,d]=dl.split('-');
-  const months=['янв','фев','мар','апр','май','июн','июл','авг','сен','окт','ноя','дек'];
-  return d+' '+months[parseInt(m)-1];
-}
-
-function cardHTML(c){
-  const bc=c.priority==='high'?'b-high':c.priority==='mid'?'b-mid':'b-low';
-  const bl=c.priority==='high'?'Высокий':c.priority==='mid'?'Средний':'Низкий';
-  const dc=c.deadline?deadlineClass(c.deadline):'';
-  const dlHTML=c.deadline?`<span class="deadline-badge ${dc}">${fmtDate(c.deadline)}</span>`:'';
-  return`<div class="card" draggable="true" data-id="${c.id}">
-    <div class="card-title">${c.title}</div>
-    ${c.description?`<div class="card-desc">${c.description}</div>`:''}
-    <div class="card-footer"><span class="badge ${bc}">${bl}</span>${dlHTML}</div>
-  </div>`;
 }
 
 async function dropCard(colId){
-  if(!dragId)return;
-  const card=cards.find(c=>c.id===dragId);
-  if(card&&card.col!==colId){card.col=colId;renderBoard();await api('cards?id=eq.'+dragId,'PATCH',{col:colId});}
-  dragId=null;
+  if(!dragCardId)return;
+  const card=cards.find(c=>c.id===dragCardId);
+  if(card&&card.col!==colId){
+    card.col=colId;renderBoard();
+    await api('cards?id=eq.'+dragCardId,'PATCH',{col:colId});
+  }
+  dragCardId=null;
+}
+
+async function dropColumn(targetColId){
+  if(!dragColId||dragColId===targetColId)return;
+  const fromIdx=columns.findIndex(c=>c.id===dragColId);
+  const toIdx=columns.findIndex(c=>c.id===targetColId);
+  if(fromIdx===-1||toIdx===-1)return;
+
+  // Reorder locally
+  const moved=columns.splice(fromIdx,1)[0];
+  columns.splice(toIdx,0,moved);
+
+  // Update positions
+  columns.forEach((c,i)=>c.position=i);
+  renderBoard();
+
+  // Persist all positions
+  await Promise.all(columns.map((c,i)=>api('columns?id=eq.'+c.id,'PATCH',{position:i})));
+  dragColId=null;
 }
 
 async function renameCol(colId,newTitle){
@@ -413,6 +443,29 @@ async function delProject(id){
   projects=projects.filter(p=>p.id!==id);
   renderProjects();
   await api('projects?id=eq.'+id,'DELETE');
+}
+
+function deadlineClass(dl){
+  if(!dl)return'';
+  const today=new Date();today.setHours(0,0,0,0);
+  const diff=Math.floor((new Date(dl)-today)/864e5);
+  if(diff<0)return'overdue';if(diff<=3)return'soon';return'';
+}
+function fmtDate(dl){
+  if(!dl)return'';
+  const[y,m,d]=dl.split('-');
+  return d+' '+['янв','фев','мар','апр','май','июн','июл','авг','сен','окт','ноя','дек'][parseInt(m)-1];
+}
+function cardHTML(c){
+  const bc=c.priority==='high'?'b-high':c.priority==='mid'?'b-mid':'b-low';
+  const bl=c.priority==='high'?'Высокий':c.priority==='mid'?'Средний':'Низкий';
+  const dc=c.deadline?deadlineClass(c.deadline):'';
+  const dlHTML=c.deadline?`<span class="deadline-badge ${dc}">${fmtDate(c.deadline)}</span>`:'';
+  return`<div class="card" draggable="true" data-id="${c.id}">
+    <div class="card-title">${c.title}</div>
+    ${c.description?`<div class="card-desc">${c.description}</div>`:''}
+    <div class="card-footer"><span class="badge ${bc}">${bl}</span>${dlHTML}</div>
+  </div>`;
 }
 
 function openProjModal(){
@@ -480,7 +533,6 @@ function selColor(c,el){
   document.querySelectorAll('.color-dot').forEach(d=>d.classList.remove('selected'));
   el.classList.add('selected');
 }
-
 function openModal(){document.getElementById('modal-bg').classList.add('open');}
 function closeModal(){document.getElementById('modal-bg').classList.remove('open');}
 
@@ -498,20 +550,17 @@ async function saveModal(){
   }else{
     const title=document.getElementById('inp-ctitle').value.trim();
     if(!title)return;
-    const body={
-      proj_id:currentProj,title,
+    const body={proj_id:currentProj,title,
       description:document.getElementById('inp-cdesc').value.trim(),
       priority:document.getElementById('inp-cpri').value,
       col:document.getElementById('inp-ccol').value,
-      deadline:document.getElementById('inp-deadline').value||null
-    };
+      deadline:document.getElementById('inp-deadline').value||null};
     if(editingId){
       await api('cards?id=eq.'+editingId,'PATCH',body);
       const idx=cards.findIndex(c=>c.id===editingId);
       if(idx>-1)cards[idx]={...cards[idx],...body};
     }else{
-      const res=await api('cards','POST',body);
-      cards.push(res[0]);
+      const res=await api('cards','POST',body);cards.push(res[0]);
     }
     renderBoard();
     if(currentView==='calendar')renderCalendar();
@@ -520,37 +569,33 @@ async function saveModal(){
 }
 
 function calNav(dir){calDate.setMonth(calDate.getMonth()+dir);renderCalendar();}
-
 function renderCalendar(){
   const year=calDate.getFullYear(),month=calDate.getMonth();
   document.getElementById('cal-month').textContent=MONTHS[month]+' '+year;
-  const grid=document.getElementById('cal-grid');
-  grid.innerHTML='';
+  const grid=document.getElementById('cal-grid');grid.innerHTML='';
   DAYS.forEach(d=>{const el=document.createElement('div');el.className='cal-dow';el.textContent=d;grid.appendChild(el);});
   const first=new Date(year,month,1);
   let startDow=first.getDay()-1;if(startDow<0)startDow=6;
-  const daysInMonth=new Date(year,month+1,0).getDate();
-  const daysInPrev=new Date(year,month,0).getDate();
+  const dim=new Date(year,month+1,0).getDate();
+  const dip=new Date(year,month,0).getDate();
   const today=new Date();today.setHours(0,0,0,0);
-  const rows=Math.ceil((startDow+daysInMonth)/7)*7;
+  const rows=Math.ceil((startDow+dim)/7)*7;
   for(let i=0;i<rows;i++){
     const el=document.createElement('div');el.className='cal-day';
-    let dayNum,isCur=true;
-    if(i<startDow){dayNum=daysInPrev-startDow+i+1;isCur=false;}
-    else if(i>=startDow+daysInMonth){dayNum=i-startDow-daysInMonth+1;isCur=false;}
-    else{dayNum=i-startDow+1;}
+    let dn,isCur=true;
+    if(i<startDow){dn=dip-startDow+i+1;isCur=false;}
+    else if(i>=startDow+dim){dn=i-startDow-dim+1;isCur=false;}
+    else{dn=i-startDow+1;}
     if(!isCur)el.classList.add('other-month');
-    const thisDate=new Date(year,isCur?month:(i<startDow?month-1:month+1),dayNum);
-    if(thisDate.getTime()===today.getTime())el.classList.add('today');
-    el.innerHTML=`<div class="cal-day-num">${dayNum}</div>`;
+    const td=new Date(year,isCur?month:(i<startDow?month-1:month+1),dn);
+    if(td.getTime()===today.getTime())el.classList.add('today');
+    el.innerHTML=`<div class="cal-day-num">${dn}</div>`;
     if(isCur){
-      const dayStr=year+'-'+String(month+1).padStart(2,'0')+'-'+String(dayNum).padStart(2,'0');
-      cards.filter(c=>c.deadline===dayStr).forEach(c=>{
+      const ds=year+'-'+String(month+1).padStart(2,'0')+'-'+String(dn).padStart(2,'0');
+      cards.filter(c=>c.deadline===ds).forEach(c=>{
         const t=document.createElement('div');
-        t.className='cal-task p-'+c.priority;
-        t.textContent=c.title;t.title=c.title;
-        t.onclick=()=>openEditCardModal(c.id);
-        el.appendChild(t);
+        t.className='cal-task p-'+c.priority;t.textContent=c.title;t.title=c.title;
+        t.onclick=()=>openEditCardModal(c.id);el.appendChild(t);
       });
     }
     grid.appendChild(el);
