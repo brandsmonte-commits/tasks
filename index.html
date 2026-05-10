@@ -17,21 +17,81 @@
   --r:10px;--rl:14px;
 }
 *{box-sizing:border-box;margin:0;padding:0;}
-body{font-family:'Geist',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;}
-.topbar{height:52px;border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 20px;gap:12px;position:sticky;top:0;background:var(--bg);z-index:20;}
-.logo{font-size:14px;font-weight:600;letter-spacing:-0.3px;}.logo span{color:var(--accent);}
+body{font-family:'Geist',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;display:flex;flex-direction:column;}
+
+/* SIDEBAR */
+.sidebar{position:fixed;left:0;top:0;bottom:0;width:200px;background:var(--bg2);border-right:1px solid var(--border);display:flex;flex-direction:column;z-index:30;}
+.sidebar-logo{height:52px;display:flex;align-items:center;padding:0 16px;border-bottom:1px solid var(--border);font-size:14px;font-weight:600;letter-spacing:-0.3px;}
+.sidebar-logo span{color:var(--accent);}
+.sidebar-nav{padding:10px 8px;display:flex;flex-direction:column;gap:2px;}
+.nav-item{display:flex;align-items:center;gap:8px;padding:7px 10px;border-radius:var(--r);cursor:pointer;font-size:13px;color:var(--text2);border:none;background:transparent;font-family:'Geist',sans-serif;width:100%;text-align:left;transition:all .15s;}
+.nav-item:hover{background:var(--bg3);color:var(--text);}
+.nav-item.active{background:var(--bg3);color:var(--text);}
+.nav-item .ni-icon{font-size:15px;width:18px;text-align:center;flex-shrink:0;}
+.nav-item .ni-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+.sidebar-section{padding:6px 16px 4px;font-size:10px;color:var(--text3);font-family:'Geist Mono',monospace;text-transform:uppercase;letter-spacing:.6px;margin-top:6px;}
+.sidebar-bottom{margin-top:auto;padding:12px 8px;border-top:1px solid var(--border);}
+
+/* MAIN */
+.main{margin-left:200px;flex:1;display:flex;flex-direction:column;min-height:100vh;}
+.topbar{height:52px;border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 24px;gap:12px;position:sticky;top:0;background:var(--bg);z-index:20;}
+.topbar-title{font-size:15px;font-weight:600;letter-spacing:-0.3px;}
 .breadcrumb{display:flex;align-items:center;gap:6px;font-size:13px;color:var(--text2);}
-.bc-link{cursor:pointer;transition:color .15s;}.bc-link:hover{color:var(--text);}
+.bc-link{cursor:pointer;}.bc-link:hover{color:var(--text);}
 .bc-sep{color:var(--text3);}
 .bc-cur{color:var(--text);display:flex;align-items:center;gap:6px;}
-.screen{display:none;}.screen.active{display:block;}
+.screen{display:none;flex:1;}.screen.active{display:block;}
+
+/* BUTTONS */
 .btn{font-family:'Geist',sans-serif;font-size:12px;font-weight:500;border-radius:var(--r);cursor:pointer;border:none;transition:all .15s;display:inline-flex;align-items:center;gap:5px;padding:7px 13px;}
 .btn-primary{background:var(--accent);color:#fff;}.btn-primary:hover{background:var(--accent2);}
 .btn-ghost{background:transparent;color:var(--text2);border:1px solid var(--border2);}.btn-ghost:hover{background:var(--bg3);color:var(--text);}
 .btn-danger{background:rgba(255,95,95,0.15);color:var(--high);border:1px solid rgba(255,95,95,0.3);}.btn-danger:hover{background:rgba(255,95,95,0.25);}
-.btn-icon{padding:5px;background:transparent;color:var(--text3);border:none;border-radius:6px;cursor:pointer;font-size:14px;line-height:1;transition:all .15s;font-family:'Geist',sans-serif;}
+.btn-icon{padding:5px;background:transparent;color:var(--text3);border:none;border-radius:6px;cursor:pointer;font-size:14px;line-height:1;font-family:'Geist',sans-serif;transition:all .15s;}
 .btn-icon:hover{background:var(--bg4);color:var(--text2);}
-.page{padding:24px 20px;max-width:960px;margin:0 auto;}
+
+/* OVERVIEW */
+.overview-page{padding:24px;max-width:900px;}
+.overview-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:28px;}
+.stat-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--rl);padding:16px;cursor:pointer;transition:all .15s;}
+.stat-card:hover{border-color:var(--border2);}
+.stat-card.active-stat{border-color:var(--accent);background:rgba(124,111,255,0.06);}
+.stat-num{font-size:28px;font-weight:600;letter-spacing:-1px;font-family:'Geist Mono',monospace;margin-bottom:4px;}
+.stat-label{font-size:11px;color:var(--text3);text-transform:uppercase;letter-spacing:.5px;font-family:'Geist Mono',monospace;}
+.stat-card.s-today .stat-num{color:var(--mid);}
+.stat-card.s-overdue .stat-num{color:var(--high);}
+.stat-card.s-done .stat-num{color:var(--low);}
+
+.ov-filters{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap;align-items:center;}
+.ov-filter-group{display:flex;gap:4px;}
+.pill{font-family:'Geist',sans-serif;font-size:11px;font-weight:500;border-radius:99px;cursor:pointer;border:1px solid var(--border2);background:transparent;color:var(--text2);padding:4px 10px;transition:all .15s;}
+.pill:hover{background:var(--bg3);}
+.pill.active{background:var(--bg4);color:var(--text);border-color:var(--border2);}
+.pill.p-high.active{background:var(--high-bg);color:var(--high);border-color:var(--high);}
+.pill.p-mid.active{background:var(--mid-bg);color:var(--mid);border-color:var(--mid);}
+.pill.p-low.active{background:var(--low-bg);color:var(--low);border-color:var(--low);}
+.pill-sep{width:1px;background:var(--border2);margin:0 4px;align-self:stretch;}
+
+.ov-section{margin-bottom:20px;}
+.ov-section-title{font-size:11px;color:var(--text3);font-family:'Geist Mono',monospace;text-transform:uppercase;letter-spacing:.6px;margin-bottom:8px;display:flex;align-items:center;gap:8px;}
+.ov-section-title .col-dot{width:6px;height:6px;border-radius:50%;background:var(--border2);}
+.ov-task-list{display:flex;flex-direction:column;gap:4px;}
+.ov-task{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:10px 14px;display:flex;align-items:center;gap:12px;cursor:pointer;transition:all .15s;}
+.ov-task:hover{border-color:var(--border2);background:var(--bg3);}
+.ov-task-title{flex:1;font-size:13px;font-weight:500;color:var(--text);letter-spacing:-.2px;}
+.ov-task-desc{font-size:11px;color:var(--text3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:200px;}
+.ov-proj-tag{font-size:10px;padding:2px 8px;border-radius:99px;font-family:'Geist Mono',monospace;white-space:nowrap;border:1px solid var(--border2);color:var(--text3);}
+.badge{font-size:10px;padding:2px 8px;border-radius:99px;font-weight:500;font-family:'Geist Mono',monospace;white-space:nowrap;}
+.b-high{background:var(--high-bg);color:var(--high);}
+.b-mid{background:var(--mid-bg);color:var(--mid);}
+.b-low{background:var(--low-bg);color:var(--low);}
+.ov-deadline{font-size:10px;color:var(--text3);font-family:'Geist Mono',monospace;white-space:nowrap;}
+.ov-deadline.overdue{color:var(--high);}
+.ov-deadline.soon{color:var(--mid);}
+.ov-empty{text-align:center;padding:32px;color:var(--text3);font-size:13px;}
+
+/* PROJECTS PAGE */
+.page{padding:24px;max-width:960px;}
 .page-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;}
 .page-title{font-size:18px;font-weight:600;letter-spacing:-0.4px;}
 .proj-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px;}
@@ -44,6 +104,8 @@ body{font-family:'Geist',sans-serif;background:var(--bg);color:var(--text);min-h
 .proj-card:hover .proj-del{opacity:1;}
 .add-proj-card{background:transparent;border:1px dashed var(--border2);border-radius:var(--rl);padding:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;font-size:13px;color:var(--text3);font-family:'Geist',sans-serif;transition:all .15s;}
 .add-proj-card:hover{border-color:var(--accent);color:var(--accent);background:rgba(124,111,255,0.05);}
+
+/* BOARD */
 .board-nav{display:flex;align-items:center;gap:8px;padding:10px 20px;border-bottom:1px solid var(--border);}
 .nav-tab{font-family:'Geist',sans-serif;font-size:12px;font-weight:500;background:transparent;border:1px solid transparent;border-radius:var(--r);cursor:pointer;color:var(--text3);padding:6px 12px;transition:all .15s;}
 .nav-tab:hover{color:var(--text2);}
@@ -57,8 +119,6 @@ body{font-family:'Geist',sans-serif;background:var(--bg);color:var(--text);min-h
 .filter-btn.f-low.active{background:var(--low-bg);color:var(--low);border-color:var(--low);}
 .board-wrap{padding:16px 20px;overflow-x:auto;}
 .board{display:flex;gap:10px;min-height:500px;align-items:flex-start;}
-
-/* COLUMN — draggable */
 .column{flex:0 0 220px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--rl);display:flex;flex-direction:column;transition:opacity .15s;}
 .column.col-dragging{opacity:.35;}
 .column.col-drag-over{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent);}
@@ -80,10 +140,6 @@ body{font-family:'Geist',sans-serif;background:var(--bg);color:var(--text);min-h
 .card-title{font-size:13px;font-weight:500;color:var(--text);line-height:1.4;margin-bottom:3px;letter-spacing:-.2px;}
 .card-desc{font-size:11px;color:var(--text3);line-height:1.5;margin-bottom:6px;}
 .card-footer{display:flex;align-items:center;justify-content:space-between;gap:6px;flex-wrap:wrap;}
-.badge{font-size:10px;padding:2px 8px;border-radius:99px;font-weight:500;font-family:'Geist Mono',monospace;white-space:nowrap;}
-.b-high{background:var(--high-bg);color:var(--high);}
-.b-mid{background:var(--mid-bg);color:var(--mid);}
-.b-low{background:var(--low-bg);color:var(--low);}
 .deadline-badge{font-size:10px;color:var(--text3);font-family:'Geist Mono',monospace;}
 .deadline-badge.overdue{color:var(--high);}
 .deadline-badge.soon{color:var(--mid);}
@@ -93,21 +149,25 @@ body{font-family:'Geist',sans-serif;background:var(--bg);color:var(--text);min-h
 .add-col-btn{flex:0 0 auto;background:transparent;border:1px dashed var(--border2);border-radius:var(--rl);padding:12px 16px;cursor:pointer;display:flex;align-items:center;gap:6px;font-size:12px;color:var(--text3);font-family:'Geist',sans-serif;transition:all .15s;white-space:nowrap;align-self:flex-start;}
 .add-col-btn:hover{border-color:var(--accent);color:var(--accent);}
 .empty-col{text-align:center;padding:20px 10px;color:var(--text3);font-size:11px;line-height:1.6;}
+
+/* CALENDAR */
 .cal-wrap{padding:16px 20px;max-width:860px;}
 .cal-header{display:flex;align-items:center;gap:12px;margin-bottom:16px;}
 .cal-month{font-size:16px;font-weight:600;letter-spacing:-.3px;}
 .cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:1px;background:var(--border);border:1px solid var(--border);border-radius:var(--rl);overflow:hidden;}
 .cal-dow{background:var(--bg2);padding:8px;text-align:center;font-size:11px;color:var(--text3);font-family:'Geist Mono',monospace;text-transform:uppercase;letter-spacing:.5px;}
-.cal-day{background:var(--bg2);min-height:88px;padding:7px;vertical-align:top;}
+.cal-day{background:var(--bg2);min-height:88px;padding:7px;}
 .cal-day.other-month{background:var(--bg);}
 .cal-day.today{background:rgba(124,111,255,0.07);}
 .cal-day-num{font-size:12px;color:var(--text3);font-family:'Geist Mono',monospace;margin-bottom:4px;}
 .cal-day.today .cal-day-num{color:var(--accent);font-weight:600;}
-.cal-task{font-size:10px;border-radius:4px;padding:2px 5px;margin-bottom:2px;cursor:pointer;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;transition:opacity .15s;}
+.cal-task{font-size:10px;border-radius:4px;padding:2px 5px;margin-bottom:2px;cursor:pointer;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .cal-task:hover{opacity:.75;}
 .cal-task.p-high{background:var(--high-bg);color:var(--high);}
 .cal-task.p-mid{background:var(--mid-bg);color:var(--mid);}
 .cal-task.p-low{background:var(--low-bg);color:var(--low);}
+
+/* MODAL */
 .modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.65);align-items:center;justify-content:center;z-index:100;backdrop-filter:blur(4px);}
 .modal-bg.open{display:flex;}
 .modal{background:var(--bg2);border:1px solid var(--border2);border-radius:var(--rl);padding:22px;width:360px;max-width:95vw;max-height:90vh;overflow-y:auto;}
@@ -128,54 +188,86 @@ body{font-family:'Geist',sans-serif;background:var(--bg);color:var(--text);min-h
 </head>
 <body>
 
-<div class="topbar">
-  <div class="logo">tasks<span>.</span></div>
-  <div class="breadcrumb" id="breadcrumb"></div>
-</div>
-
-<div id="screen-projects" class="screen active">
-  <div class="page">
-    <div class="page-header">
-      <div class="page-title">Проекты</div>
-      <button class="btn btn-primary" onclick="openProjModal()">+ Новый проект</button>
-    </div>
-    <div id="proj-grid" class="proj-grid">
-      <div class="loading"><div class="spinner"></div> Загрузка...</div>
-    </div>
+<div class="sidebar">
+  <div class="sidebar-logo">tasks<span>.</span></div>
+  <div class="sidebar-nav">
+    <button class="nav-item active" id="nav-overview" onclick="showOverview()">
+      <span class="ni-icon">&#9632;</span> Обзор
+    </button>
+    <button class="nav-item" id="nav-projects" onclick="showProjectsScreen()">
+      <span class="ni-icon">&#9638;</span> Проекты
+    </button>
+  </div>
+  <div class="sidebar-section">Проекты</div>
+  <div class="sidebar-nav" id="sidebar-proj-list"></div>
+  <div class="sidebar-bottom">
+    <button class="nav-item" style="width:100%" onclick="openProjModal()">
+      <span class="ni-icon">+</span> Новый проект
+    </button>
   </div>
 </div>
 
-<div id="screen-board" class="screen">
-  <div class="board-nav">
-    <button class="nav-tab active" id="tab-board" onclick="switchView('board')">Доска</button>
-    <button class="nav-tab" id="tab-calendar" onclick="switchView('calendar')">Календарь</button>
-    <div style="margin-left:auto;display:flex;gap:8px;">
-      <button class="btn btn-ghost" onclick="openColModal()" style="font-size:11px;">+ Статус</button>
-      <button class="btn btn-primary" onclick="openCardModal(null)">+ Задача</button>
+<div class="main">
+  <div class="topbar">
+    <div class="topbar-title" id="topbar-title">Обзор</div>
+    <div class="breadcrumb" id="breadcrumb"></div>
+    <div style="margin-left:auto;display:flex;gap:8px;" id="topbar-actions"></div>
+  </div>
+
+  <!-- OVERVIEW -->
+  <div id="screen-overview" class="screen active">
+    <div class="overview-page">
+      <div class="overview-stats" id="ov-stats"></div>
+      <div class="ov-filters" id="ov-filters"></div>
+      <div id="ov-content"></div>
     </div>
   </div>
-  <div id="view-board">
-    <div class="filter-bar">
-      <span class="filter-label">Приоритет</span>
-      <button class="filter-btn active" data-filter="all" onclick="setFilter('all')">Все</button>
-      <button class="filter-btn f-high" data-filter="high" onclick="setFilter('high')">Высокий</button>
-      <button class="filter-btn f-mid" data-filter="mid" onclick="setFilter('mid')">Средний</button>
-      <button class="filter-btn f-low" data-filter="low" onclick="setFilter('low')">Низкий</button>
-    </div>
-    <div class="board-wrap"><div class="board" id="board"></div></div>
-  </div>
-  <div id="view-calendar" style="display:none;">
-    <div class="cal-wrap">
-      <div class="cal-header">
-        <button class="btn-icon" onclick="calNav(-1)">&#8592;</button>
-        <div class="cal-month" id="cal-month"></div>
-        <button class="btn-icon" onclick="calNav(1)">&#8594;</button>
+
+  <!-- PROJECTS LIST -->
+  <div id="screen-projects" class="screen">
+    <div class="page">
+      <div class="page-header">
+        <div class="page-title">Проекты</div>
+        <button class="btn btn-primary" onclick="openProjModal()">+ Новый проект</button>
       </div>
-      <div class="cal-grid" id="cal-grid"></div>
+      <div id="proj-grid" class="proj-grid"></div>
+    </div>
+  </div>
+
+  <!-- BOARD -->
+  <div id="screen-board" class="screen">
+    <div class="board-nav">
+      <button class="nav-tab active" id="tab-board" onclick="switchView('board')">Доска</button>
+      <button class="nav-tab" id="tab-calendar" onclick="switchView('calendar')">Календарь</button>
+      <div style="margin-left:auto;display:flex;gap:8px;">
+        <button class="btn btn-ghost" onclick="openColModal()" style="font-size:11px;">+ Статус</button>
+        <button class="btn btn-primary" onclick="openCardModal(null)">+ Задача</button>
+      </div>
+    </div>
+    <div id="view-board">
+      <div class="filter-bar">
+        <span class="filter-label">Приоритет</span>
+        <button class="filter-btn active" data-filter="all" onclick="setFilter('all')">Все</button>
+        <button class="filter-btn f-high" data-filter="high" onclick="setFilter('high')">Высокий</button>
+        <button class="filter-btn f-mid" data-filter="mid" onclick="setFilter('mid')">Средний</button>
+        <button class="filter-btn f-low" data-filter="low" onclick="setFilter('low')">Низкий</button>
+      </div>
+      <div class="board-wrap"><div class="board" id="board"></div></div>
+    </div>
+    <div id="view-calendar" style="display:none;">
+      <div class="cal-wrap">
+        <div class="cal-header">
+          <button class="btn-icon" onclick="calNav(-1)">&#8592;</button>
+          <div class="cal-month" id="cal-month"></div>
+          <button class="btn-icon" onclick="calNav(1)">&#8594;</button>
+        </div>
+        <div class="cal-grid" id="cal-grid"></div>
+      </div>
     </div>
   </div>
 </div>
 
+<!-- MODAL -->
 <div class="modal-bg" id="modal-bg">
   <div class="modal">
     <div class="modal-title" id="modal-title"></div>
@@ -197,81 +289,261 @@ const COLORS=['#7c6fff','#4caf7d','#ff5f5f','#f5a623','#4db8ff','#c084fc'];
 const MONTHS=['Январь','Февраль','Март','Апрель','Май','Июнь','Июль','Август','Сентябрь','Октябрь','Ноябрь','Декабрь'];
 const DAYS=['Пн','Вт','Ср','Чт','Пт','Сб','Вс'];
 
-let projects=[],cards=[],columns=[];
-let currentProj=null,currentFilter='all',currentView='board';
+// Global state
+let projects=[], allCards=[], allColumns=[];
+// Per-project state
+let cards=[], columns=[];
+let currentProj=null, currentFilter='all', currentView='board';
 let calDate=new Date();
-let dragCardId=null,dragColId=null;
-let modalMode=null,editingId=null,selectedColor=COLORS[0],targetCol=null;
+let dragCardId=null, dragColId=null;
+let modalMode=null, editingId=null, editingProjId=null;
+let selectedColor=COLORS[0], targetCol=null;
+// Overview filters
+let ovFilterPri='all', ovFilterProj='all', ovFilterStatus='all';
 
 async function api(path,method='GET',body=null){
   const opts={method,headers:{'apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY,'Content-Type':'application/json','Prefer':method==='POST'?'return=representation':''}};
   if(body)opts.body=JSON.stringify(body);
   const r=await fetch(SB_URL+'/rest/v1/'+path,opts);
-  const text=await r.text();
-  return text?JSON.parse(text):null;
+  const t=await r.text();return t?JSON.parse(t):null;
 }
 
-async function loadProjects(){
+async function bootstrap(){
   projects=await api('projects?select=*&order=created_at.asc')||[];
-  renderProjects();
+  allCards=await api('cards?select=*&order=created_at.asc')||[];
+  allColumns=await api('columns?select=*&order=position.asc')||[];
+  renderSidebar();
+  renderOverview();
 }
 
-async function loadProject(projId){
-  [cards,columns]=await Promise.all([
-    api('cards?select=*&proj_id=eq.'+projId+'&order=created_at.asc'),
-    api('columns?select=*&proj_id=eq.'+projId+'&order=position.asc')
-  ]);
-  cards=cards||[];columns=columns||[];
-  if(!columns.length)await initDefaultColumns(projId);
+function renderSidebar(){
+  const list=document.getElementById('sidebar-proj-list');
+  list.innerHTML='';
+  projects.forEach(p=>{
+    const btn=document.createElement('button');
+    btn.className='nav-item';btn.id='nav-proj-'+p.id;
+    btn.innerHTML=`<span class="ni-dot" style="background:${p.color}"></span>${p.name}`;
+    btn.onclick=()=>openProject(p.id,p.name,p.color);
+    list.appendChild(btn);
+  });
 }
 
-async function initDefaultColumns(projId){
-  const defs=['Бэклог','В работе','Ревью','Готово'];
-  for(let i=0;i<defs.length;i++){
-    const res=await api('columns','POST',{proj_id:projId,title:defs[i],position:i});
-    columns.push(res[0]);
-  }
+function setActiveNav(id){
+  document.querySelectorAll('.nav-item').forEach(b=>b.classList.remove('active'));
+  const el=document.getElementById(id);if(el)el.classList.add('active');
 }
 
-function renderProjects(){
+function showScreen(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
+// ── OVERVIEW ──────────────────────────────────────────────
+function showOverview(){
+  setActiveNav('nav-overview');
+  showScreen('screen-overview');
+  document.getElementById('topbar-title').textContent='Обзор';
+  document.getElementById('breadcrumb').innerHTML='';
+  document.getElementById('topbar-actions').innerHTML='';
+  renderOverview();
+}
+
+function todayStr(){
+  const d=new Date();
+  return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+}
+
+function renderOverview(){
+  const today=todayStr();
+  const notDoneCards=allCards.filter(c=>{
+    const col=allColumns.find(x=>x.id===c.col);
+    return col&&col.title!=='Готово';
+  });
+
+  // Find "done" column ids
+  const doneColIds=allColumns.filter(c=>c.title==='Готово').map(c=>c.id);
+  const todayCards=allCards.filter(c=>c.deadline===today&&!doneColIds.includes(c.col));
+  const overdueCards=allCards.filter(c=>c.deadline&&c.deadline<today&&!doneColIds.includes(c.col));
+  const doneCards=allCards.filter(c=>doneColIds.includes(c.col));
+  const totalActive=notDoneCards.length;
+
+  // Stats
+  const stats=document.getElementById('ov-stats');
+  stats.innerHTML=`
+    <div class="stat-card${ovFilterStatus==='active'?' active-stat':''}" onclick="setOvStatus('active')">
+      <div class="stat-num">${totalActive}</div>
+      <div class="stat-label">Активных</div>
+    </div>
+    <div class="stat-card s-today${ovFilterStatus==='today'?' active-stat':''}" onclick="setOvStatus('today')">
+      <div class="stat-num">${todayCards.length}</div>
+      <div class="stat-label">Сегодня</div>
+    </div>
+    <div class="stat-card s-overdue${ovFilterStatus==='overdue'?' active-stat':''}" onclick="setOvStatus('overdue')">
+      <div class="stat-num">${overdueCards.length}</div>
+      <div class="stat-label">Просрочено</div>
+    </div>
+    <div class="stat-card s-done${ovFilterStatus==='done'?' active-stat':''}" onclick="setOvStatus('done')">
+      <div class="stat-num">${doneCards.length}</div>
+      <div class="stat-label">Готово</div>
+    </div>`;
+
+  // Filters
+  const filters=document.getElementById('ov-filters');
+  const projPills=projects.map(p=>`<button class="pill${ovFilterProj===p.id?' active':''}" onclick="setOvProj('${p.id}')">${p.name}</button>`).join('');
+  filters.innerHTML=`
+    <div class="ov-filter-group">
+      <button class="pill${ovFilterProj==='all'?' active':''}" onclick="setOvProj('all')">Все проекты</button>
+      ${projPills}
+    </div>
+    <div class="pill-sep"></div>
+    <div class="ov-filter-group">
+      <button class="pill${ovFilterPri==='all'?' active':''}" onclick="setOvPri('all')">Все</button>
+      <button class="pill p-high${ovFilterPri==='high'?' active':''}" onclick="setOvPri('high')">Высокий</button>
+      <button class="pill p-mid${ovFilterPri==='mid'?' active':''}" onclick="setOvPri('mid')">Средний</button>
+      <button class="pill p-low${ovFilterPri==='low'?' active':''}" onclick="setOvPri('low')">Низкий</button>
+    </div>`;
+
+  // Filter cards
+  let filtered=[...allCards];
+  if(ovFilterStatus==='active') filtered=filtered.filter(c=>!doneColIds.includes(c.col));
+  else if(ovFilterStatus==='today') filtered=filtered.filter(c=>c.deadline===today&&!doneColIds.includes(c.col));
+  else if(ovFilterStatus==='overdue') filtered=filtered.filter(c=>c.deadline&&c.deadline<today&&!doneColIds.includes(c.col));
+  else if(ovFilterStatus==='done') filtered=filtered.filter(c=>doneColIds.includes(c.col));
+  if(ovFilterProj!=='all') filtered=filtered.filter(c=>c.proj_id===ovFilterProj);
+  if(ovFilterPri!=='all') filtered=filtered.filter(c=>c.priority===ovFilterPri);
+
+  // Group by column title
+  const content=document.getElementById('ov-content');
+  if(!filtered.length){content.innerHTML='<div class="ov-empty">Нет задач</div>';return;}
+
+  // Group by column
+  const groups={};
+  filtered.forEach(c=>{
+    const col=allColumns.find(x=>x.id===c.col);
+    const key=col?col.title:'Без статуса';
+    if(!groups[key])groups[key]=[];
+    groups[key].push(c);
+  });
+
+  content.innerHTML='';
+  Object.entries(groups).forEach(([colTitle,colCards])=>{
+    const sec=document.createElement('div');
+    sec.className='ov-section';
+    sec.innerHTML=`<div class="ov-section-title"><span class="col-dot"></span>${colTitle} <span style="color:var(--text3);font-size:10px">${colCards.length}</span></div>
+      <div class="ov-task-list">${colCards.map(c=>ovTaskHTML(c)).join('')}</div>`;
+    content.appendChild(sec);
+  });
+
+  // Click handlers
+  content.querySelectorAll('.ov-task').forEach(el=>{
+    el.addEventListener('click',()=>openOvCardEdit(el.dataset.id));
+  });
+}
+
+function ovTaskHTML(c){
+  const proj=projects.find(p=>p.id===c.proj_id);
+  const bc=c.priority==='high'?'b-high':c.priority==='mid'?'b-mid':'b-low';
+  const bl=c.priority==='high'?'Высокий':c.priority==='mid'?'Средний':'Низкий';
+  const dc=c.deadline?deadlineClass(c.deadline):'';
+  const dlHTML=c.deadline?`<span class="ov-deadline ${dc}">${fmtDate(c.deadline)}</span>`:'';
+  const projDot=proj?`<span style="width:6px;height:6px;border-radius:50%;background:${proj.color};display:inline-block;flex-shrink:0"></span>`:'';
+  const projName=proj?`<span class="ov-proj-tag" style="border-color:${proj.color}22">${projDot} ${proj.name}</span>`:'';
+  return`<div class="ov-task" data-id="${c.id}">
+    <div class="ov-task-title">${c.title}</div>
+    ${c.description?`<div class="ov-task-desc">${c.description}</div>`:''}
+    <span class="badge ${bc}">${bl}</span>
+    ${dlHTML}
+    ${projName}
+  </div>`;
+}
+
+function setOvStatus(s){ovFilterStatus=ovFilterStatus===s?'all':s;renderOverview();}
+function setOvProj(p){ovFilterProj=p;renderOverview();}
+function setOvPri(p){ovFilterPri=p;renderOverview();}
+
+async function openOvCardEdit(cardId){
+  const c=allCards.find(x=>x.id===cardId);if(!c)return;
+  // Load columns for this project if needed
+  const projCols=allColumns.filter(x=>x.proj_id===c.proj_id);
+  editingId=cardId;editingProjId=c.proj_id;modalMode='card-ov';targetCol=c.col;
+  document.getElementById('modal-title').textContent='Редактировать задачу';
+  const colOpts=projCols.map(col=>`<option value="${col.id}"${c.col===col.id?' selected':''}>${col.title}</option>`).join('');
+  const projOpts=projects.map(p=>`<option value="${p.id}"${c.proj_id===p.id?' selected':''}>${p.name}</option>`).join('');
+  document.getElementById('modal-body').innerHTML=`
+    <label>Заголовок</label>
+    <input id="inp-ctitle" type="text" value="${c.title}" />
+    <label>Описание</label>
+    <textarea id="inp-cdesc">${c.description||''}</textarea>
+    <label>Приоритет</label>
+    <select id="inp-cpri">
+      <option value="low"${c.priority==='low'?' selected':''}>Низкий</option>
+      <option value="mid"${c.priority==='mid'?' selected':''}>Средний</option>
+      <option value="high"${c.priority==='high'?' selected':''}>Высокий</option>
+    </select>
+    <label>Проект</label>
+    <select id="inp-cproj" onchange="refreshColOpts(this.value,'${c.col}')">${projOpts}</select>
+    <label>Статус</label>
+    <select id="inp-ccol">${colOpts}</select>
+    <label>Дедлайн</label>
+    <input id="inp-deadline" type="date" value="${c.deadline||''}" />`;
+  document.getElementById('modal-left-btn').innerHTML=
+    `<button class="btn btn-danger" onclick="delCardGlobal('${cardId}')">Удалить</button>`;
+  openModal();setTimeout(()=>document.getElementById('inp-ctitle').focus(),60);
+}
+
+function refreshColOpts(projId, currentCol){
+  const projCols=allColumns.filter(x=>x.proj_id===projId);
+  const sel=document.getElementById('inp-ccol');
+  sel.innerHTML=projCols.map(col=>`<option value="${col.id}"${col.id===currentCol?' selected':''}>${col.title}</option>`).join('');
+}
+
+async function delCardGlobal(id){
+  allCards=allCards.filter(c=>c.id!==id);
+  if(cards) cards=cards.filter(c=>c.id!==id);
+  closeModal();renderOverview();
+  await api('cards?id=eq.'+id,'DELETE');
+}
+
+// ── PROJECTS LIST ──────────────────────────────────────────
+function showProjectsScreen(){
+  setActiveNav('nav-projects');
+  showScreen('screen-projects');
+  document.getElementById('topbar-title').textContent='Проекты';
+  document.getElementById('breadcrumb').innerHTML='';
+  document.getElementById('topbar-actions').innerHTML='<button class="btn btn-primary" onclick="openProjModal()">+ Новый проект</button>';
+  renderProjGrid();
+}
+
+function renderProjGrid(){
   const grid=document.getElementById('proj-grid');
   grid.innerHTML='';
-  document.getElementById('breadcrumb').innerHTML='';
   projects.forEach(p=>{
-    const el=document.createElement('div');
-    el.className='proj-card';
+    const projCards=allCards.filter(c=>c.proj_id===p.id);
+    const doneColIds=allColumns.filter(c=>c.proj_id===p.id&&c.title==='Готово').map(c=>c.id);
+    const done=projCards.filter(c=>doneColIds.includes(c.col)).length;
+    const el=document.createElement('div');el.className='proj-card';
     el.innerHTML=`<div class="proj-dot" style="background:${p.color}"></div>
       <div class="proj-name">${p.name}</div>
-      <div class="proj-meta" id="pmeta-${p.id}">загрузка...</div>
+      <div class="proj-meta">${projCards.length} задач · ${done} готово</div>
       <button class="btn-icon proj-del" onclick="event.stopPropagation();delProject('${p.id}')" title="Удалить">&#x2715;</button>`;
     el.addEventListener('click',()=>openProject(p.id,p.name,p.color));
     grid.appendChild(el);
-    loadMeta(p.id);
   });
-  const add=document.createElement('button');
-  add.className='add-proj-card';add.innerHTML='+ Новый проект';
-  add.onclick=openProjModal;grid.appendChild(add);
+  const add=document.createElement('button');add.className='add-proj-card';
+  add.innerHTML='+ Новый проект';add.onclick=openProjModal;grid.appendChild(add);
 }
 
-async function loadMeta(projId){
-  try{
-    const c=await api('cards?select=id,col&proj_id=eq.'+projId)||[];
-    const cols=await api('columns?select=id&proj_id=eq.'+projId+'&order=position.desc&limit=1')||[];
-    const lastCol=cols[0]?.id;
-    const done=lastCol?c.filter(x=>x.col===lastCol).length:0;
-    const el=document.getElementById('pmeta-'+projId);
-    if(el)el.textContent=c.length+' задач · '+done+' готово';
-  }catch(e){}
-}
-
+// ── BOARD ──────────────────────────────────────────────────
 async function openProject(projId,name,color){
   currentProj=projId;currentFilter='all';currentView='board';
-  document.getElementById('screen-projects').classList.remove('active');
-  document.getElementById('screen-board').classList.add('active');
+  setActiveNav('nav-proj-'+projId);
+  showScreen('screen-board');
+  document.getElementById('topbar-title').textContent='';
   document.getElementById('breadcrumb').innerHTML=
-    `<span class="bc-link" onclick="showProjects()">Проекты</span>
+    `<span class="bc-link" onclick="showOverview()">Обзор</span>
      <span class="bc-sep">/</span>
      <span class="bc-cur"><span style="width:7px;height:7px;border-radius:50%;background:${color};display:inline-block"></span>${name}</span>`;
+  document.getElementById('topbar-actions').innerHTML='';
   document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
   document.querySelector('[data-filter="all"]').classList.add('active');
   document.getElementById('tab-board').classList.add('active');
@@ -279,15 +551,20 @@ async function openProject(projId,name,color){
   document.getElementById('view-board').style.display='block';
   document.getElementById('view-calendar').style.display='none';
   document.getElementById('board').innerHTML='<div class="loading"><div class="spinner"></div> Загрузка...</div>';
-  await loadProject(projId);
+  cards=allCards.filter(c=>c.proj_id===projId);
+  columns=allColumns.filter(c=>c.proj_id===projId).sort((a,b)=>a.position-b.position);
+  if(!columns.length){
+    await initDefaultColumns(projId);
+  }
   renderBoard();
 }
 
-function showProjects(){
-  currentProj=null;
-  document.getElementById('screen-board').classList.remove('active');
-  document.getElementById('screen-projects').classList.add('active');
-  loadProjects();
+async function initDefaultColumns(projId){
+  const defs=['Бэклог','На этой неделе','Сегодня','Готово'];
+  for(let i=0;i<defs.length;i++){
+    const res=await api('columns','POST',{proj_id:projId,title:defs[i],position:i});
+    columns.push(res[0]);allColumns.push(res[0]);
+  }
 }
 
 function switchView(v){
@@ -307,27 +584,22 @@ function setFilter(f){
 }
 
 function renderBoard(){
-  const board=document.getElementById('board');
-  board.innerHTML='';
+  const board=document.getElementById('board');board.innerHTML='';
   const filtered=currentFilter==='all'?cards:cards.filter(c=>c.priority===currentFilter);
-
   columns.forEach(col=>{
     const colCards=filtered.filter(c=>c.col===col.id);
     const allCount=cards.filter(c=>c.col===col.id).length;
-    const el=document.createElement('div');
-    el.className='column';
-    el.dataset.colId=col.id;
-
+    const el=document.createElement('div');el.className='column';el.dataset.colId=col.id;
     el.innerHTML=`
       <div class="col-header">
-        <span class="col-drag-handle" title="Перетащить колонку">&#8942;&#8942;</span>
+        <span class="col-drag-handle" title="Перетащить">&#8942;&#8942;</span>
         <div class="col-title-wrap">
           <input class="col-title" value="${col.title}"
             onblur="renameCol('${col.id}',this.value)"
             onkeydown="if(event.key==='Enter')this.blur()" />
           <span class="col-count">${colCards.length}${currentFilter!=='all'?'/'+allCount:''}</span>
         </div>
-        <button class="btn-icon col-del-btn" onclick="delCol('${col.id}')" title="Удалить">&#x2715;</button>
+        <button class="btn-icon col-del-btn" onclick="delCol('${col.id}')">&#x2715;</button>
       </div>
       <div class="cards" id="col-${col.id}">
         ${colCards.length===0?'<div class="empty-col">Нет задач</div>':colCards.map(cardHTML).join('')}
@@ -335,83 +607,52 @@ function renderBoard(){
       <div class="col-footer">
         <button class="btn-add-card" onclick="openCardModal('${col.id}')">+ Добавить</button>
       </div>`;
-
-    // Card drag-over (for moving cards between columns)
-    el.addEventListener('dragover',e=>{
-      e.preventDefault();
-      if(dragCardId) el.classList.add('card-drag-over');
-      if(dragColId && dragColId!==col.id) el.classList.add('col-drag-over');
+    el.addEventListener('dragover',e=>{e.preventDefault();
+      if(dragCardId)el.classList.add('card-drag-over');
+      if(dragColId&&dragColId!==col.id)el.classList.add('col-drag-over');
     });
-    el.addEventListener('dragleave',()=>{
-      el.classList.remove('card-drag-over');
-      el.classList.remove('col-drag-over');
+    el.addEventListener('dragleave',()=>{el.classList.remove('card-drag-over');el.classList.remove('col-drag-over');});
+    el.addEventListener('drop',e=>{e.preventDefault();el.classList.remove('card-drag-over');el.classList.remove('col-drag-over');
+      if(dragCardId)dropCard(col.id);
+      if(dragColId&&dragColId!==col.id)dropColumn(col.id);
     });
-    el.addEventListener('drop',e=>{
-      e.preventDefault();
-      el.classList.remove('card-drag-over');
-      el.classList.remove('col-drag-over');
-      if(dragCardId) dropCard(col.id);
-      if(dragColId && dragColId!==col.id) dropColumn(col.id);
-    });
-
-    // Column drag (handle only)
     const handle=el.querySelector('.col-drag-handle');
-    handle.addEventListener('mousedown',()=>{ el.setAttribute('draggable','true'); });
+    handle.addEventListener('mousedown',()=>el.setAttribute('draggable','true'));
     el.addEventListener('dragstart',e=>{
-      if(!el.getAttribute('draggable')||el.getAttribute('draggable')==='false') { e.preventDefault(); return; }
-      dragColId=col.id; dragCardId=null;
-      setTimeout(()=>el.classList.add('col-dragging'),0);
+      if(el.getAttribute('draggable')!=='true'){e.preventDefault();return;}
+      dragColId=col.id;dragCardId=null;setTimeout(()=>el.classList.add('col-dragging'),0);
     });
-    el.addEventListener('dragend',()=>{
-      el.setAttribute('draggable','false');
-      el.classList.remove('col-dragging');
-      dragColId=null;
-    });
-
+    el.addEventListener('dragend',()=>{el.setAttribute('draggable','false');el.classList.remove('col-dragging');dragColId=null;});
     board.appendChild(el);
   });
-
-  // Card drag listeners
   board.querySelectorAll('.card').forEach(card=>{
-    card.addEventListener('dragstart',e=>{
-      e.stopPropagation();
-      dragCardId=card.dataset.id; dragColId=null;
-      setTimeout(()=>card.classList.add('dragging'),0);
-    });
-    card.addEventListener('dragend',()=>{ card.classList.remove('dragging'); dragCardId=null; });
+    card.addEventListener('dragstart',e=>{e.stopPropagation();dragCardId=card.dataset.id;dragColId=null;setTimeout(()=>card.classList.add('dragging'),0);});
+    card.addEventListener('dragend',()=>{card.classList.remove('dragging');dragCardId=null;});
     card.addEventListener('click',()=>openEditCardModal(card.dataset.id));
   });
-
-  const addBtn=document.createElement('button');
-  addBtn.className='add-col-btn';addBtn.innerHTML='+ Добавить статус';
-  addBtn.onclick=openColModal;board.appendChild(addBtn);
+  const addBtn=document.createElement('button');addBtn.className='add-col-btn';
+  addBtn.innerHTML='+ Добавить статус';addBtn.onclick=openColModal;board.appendChild(addBtn);
 }
 
 async function dropCard(colId){
   if(!dragCardId)return;
   const card=cards.find(c=>c.id===dragCardId);
   if(card&&card.col!==colId){
-    card.col=colId;renderBoard();
-    await api('cards?id=eq.'+dragCardId,'PATCH',{col:colId});
+    card.col=colId;
+    const gc=allCards.find(c=>c.id===dragCardId);if(gc)gc.col=colId;
+    renderBoard();await api('cards?id=eq.'+dragCardId,'PATCH',{col:colId});
   }
   dragCardId=null;
 }
 
 async function dropColumn(targetColId){
   if(!dragColId||dragColId===targetColId)return;
-  const fromIdx=columns.findIndex(c=>c.id===dragColId);
-  const toIdx=columns.findIndex(c=>c.id===targetColId);
-  if(fromIdx===-1||toIdx===-1)return;
-
-  // Reorder locally
-  const moved=columns.splice(fromIdx,1)[0];
-  columns.splice(toIdx,0,moved);
-
-  // Update positions
+  const fi=columns.findIndex(c=>c.id===dragColId);
+  const ti=columns.findIndex(c=>c.id===targetColId);
+  if(fi===-1||ti===-1)return;
+  const moved=columns.splice(fi,1)[0];columns.splice(ti,0,moved);
   columns.forEach((c,i)=>c.position=i);
   renderBoard();
-
-  // Persist all positions
   await Promise.all(columns.map((c,i)=>api('columns?id=eq.'+c.id,'PATCH',{position:i})));
   dragColId=null;
 }
@@ -421,6 +662,7 @@ async function renameCol(colId,newTitle){
   const col=columns.find(c=>c.id===colId);
   if(!col||col.title===newTitle.trim())return;
   col.title=newTitle.trim();
+  const gc=allColumns.find(c=>c.id===colId);if(gc)gc.title=col.title;
   await api('columns?id=eq.'+colId,'PATCH',{title:col.title});
 }
 
@@ -428,25 +670,27 @@ async function delCol(colId){
   if(!confirm('Удалить статус? Задачи в нём тоже удалятся.'))return;
   columns=columns.filter(c=>c.id!==colId);
   cards=cards.filter(c=>c.col!==colId);
-  renderBoard();
-  await api('columns?id=eq.'+colId,'DELETE');
+  allColumns=allColumns.filter(c=>c.id!==colId);
+  allCards=allCards.filter(c=>c.col!==colId);
+  renderBoard();await api('columns?id=eq.'+colId,'DELETE');
 }
 
 async function delCard(id){
   cards=cards.filter(c=>c.id!==id);
-  renderBoard();closeModal();
-  await api('cards?id=eq.'+id,'DELETE');
+  allCards=allCards.filter(c=>c.id!==id);
+  renderBoard();closeModal();await api('cards?id=eq.'+id,'DELETE');
 }
 
 async function delProject(id){
   if(!confirm('Удалить проект и все задачи?'))return;
   projects=projects.filter(p=>p.id!==id);
-  renderProjects();
+  allCards=allCards.filter(c=>c.proj_id!==id);
+  allColumns=allColumns.filter(c=>c.proj_id!==id);
+  renderSidebar();renderProjGrid();
   await api('projects?id=eq.'+id,'DELETE');
 }
 
 function deadlineClass(dl){
-  if(!dl)return'';
   const today=new Date();today.setHours(0,0,0,0);
   const diff=Math.floor((new Date(dl)-today)/864e5);
   if(diff<0)return'overdue';if(diff<=3)return'soon';return'';
@@ -468,8 +712,9 @@ function cardHTML(c){
   </div>`;
 }
 
+// ── MODALS ─────────────────────────────────────────────────
 function openProjModal(){
-  modalMode='project';editingId=null;selectedColor=COLORS[0];
+  modalMode='project';selectedColor=COLORS[0];
   document.getElementById('modal-title').textContent='Новый проект';
   document.getElementById('modal-body').innerHTML=`
     <label>Название</label>
@@ -485,16 +730,15 @@ function openColModal(){
   document.getElementById('modal-title').textContent='Новый статус';
   document.getElementById('modal-body').innerHTML=`
     <label>Название статуса</label>
-    <input id="inp-colname" type="text" placeholder="Например: Тестирование" />`;
+    <input id="inp-colname" type="text" placeholder="Например: На проверке" />`;
   document.getElementById('modal-left-btn').innerHTML='';
   openModal();setTimeout(()=>document.getElementById('inp-colname').focus(),60);
 }
 
 function openCardModal(colId){
-  modalMode='card';editingId=null;
-  targetCol=colId||(columns[0]?.id);
+  modalMode='card';editingId=null;targetCol=colId||(columns[0]?.id);
   document.getElementById('modal-title').textContent='Новая задача';
-  document.getElementById('modal-body').innerHTML=cardFormHTML(null);
+  document.getElementById('modal-body').innerHTML=cardFormHTML(null,columns);
   document.getElementById('modal-left-btn').innerHTML='';
   openModal();setTimeout(()=>document.getElementById('inp-ctitle').focus(),60);
 }
@@ -503,14 +747,14 @@ function openEditCardModal(cardId){
   const c=cards.find(x=>x.id===cardId);if(!c)return;
   modalMode='card';editingId=cardId;targetCol=c.col;
   document.getElementById('modal-title').textContent='Редактировать задачу';
-  document.getElementById('modal-body').innerHTML=cardFormHTML(c);
+  document.getElementById('modal-body').innerHTML=cardFormHTML(c,columns);
   document.getElementById('modal-left-btn').innerHTML=
     `<button class="btn btn-danger" onclick="delCard('${cardId}')">Удалить</button>`;
   openModal();setTimeout(()=>document.getElementById('inp-ctitle').focus(),60);
 }
 
-function cardFormHTML(c){
-  const colOpts=columns.map(col=>`<option value="${col.id}"${(c?c.col:targetCol)===col.id?' selected':''}>${col.title}</option>`).join('');
+function cardFormHTML(c,cols){
+  const colOpts=cols.map(col=>`<option value="${col.id}"${(c?c.col:targetCol)===col.id?' selected':''}>${col.title}</option>`).join('');
   return`
     <label>Заголовок</label>
     <input id="inp-ctitle" type="text" placeholder="Что нужно сделать?" value="${c?c.title:''}" />
@@ -538,36 +782,36 @@ function closeModal(){document.getElementById('modal-bg').classList.remove('open
 
 async function saveModal(){
   if(modalMode==='project'){
-    const name=document.getElementById('inp-pname').value.trim();
-    if(!name)return;
+    const name=document.getElementById('inp-pname').value.trim();if(!name)return;
     const res=await api('projects','POST',{name,color:selectedColor});
-    projects.push(res[0]);renderProjects();closeModal();
-  }else if(modalMode==='col'){
-    const title=document.getElementById('inp-colname').value.trim();
-    if(!title)return;
+    projects.push(res[0]);renderSidebar();renderProjGrid();closeModal();
+  } else if(modalMode==='col'){
+    const title=document.getElementById('inp-colname').value.trim();if(!title)return;
     const res=await api('columns','POST',{proj_id:currentProj,title,position:columns.length});
-    columns.push(res[0]);renderBoard();closeModal();
-  }else{
-    const title=document.getElementById('inp-ctitle').value.trim();
-    if(!title)return;
-    const body={proj_id:currentProj,title,
+    columns.push(res[0]);allColumns.push(res[0]);renderBoard();closeModal();
+  } else if(modalMode==='card'||modalMode==='card-ov'){
+    const title=document.getElementById('inp-ctitle').value.trim();if(!title)return;
+    const projId=modalMode==='card-ov'?editingProjId:currentProj;
+    const body={proj_id:projId,title,
       description:document.getElementById('inp-cdesc').value.trim(),
       priority:document.getElementById('inp-cpri').value,
       col:document.getElementById('inp-ccol').value,
       deadline:document.getElementById('inp-deadline').value||null};
     if(editingId){
       await api('cards?id=eq.'+editingId,'PATCH',body);
-      const idx=cards.findIndex(c=>c.id===editingId);
-      if(idx>-1)cards[idx]={...cards[idx],...body};
-    }else{
-      const res=await api('cards','POST',body);cards.push(res[0]);
+      [allCards,cards].forEach(arr=>{const i=arr.findIndex(c=>c.id===editingId);if(i>-1)arr[i]={...arr[i],...body};});
+    } else {
+      const res=await api('cards','POST',body);
+      allCards.push(res[0]);cards.push(res[0]);
     }
-    renderBoard();
+    if(modalMode==='card')renderBoard();
+    renderOverview();
     if(currentView==='calendar')renderCalendar();
     closeModal();
   }
 }
 
+// ── CALENDAR ───────────────────────────────────────────────
 function calNav(dir){calDate.setMonth(calDate.getMonth()+dir);renderCalendar();}
 function renderCalendar(){
   const year=calDate.getFullYear(),month=calDate.getMonth();
@@ -585,7 +829,7 @@ function renderCalendar(){
     let dn,isCur=true;
     if(i<startDow){dn=dip-startDow+i+1;isCur=false;}
     else if(i>=startDow+dim){dn=i-startDow-dim+1;isCur=false;}
-    else{dn=i-startDow+1;}
+    else dn=i-startDow+1;
     if(!isCur)el.classList.add('other-month');
     const td=new Date(year,isCur?month:(i<startDow?month-1:month+1),dn);
     if(td.getTime()===today.getTime())el.classList.add('today');
@@ -593,9 +837,8 @@ function renderCalendar(){
     if(isCur){
       const ds=year+'-'+String(month+1).padStart(2,'0')+'-'+String(dn).padStart(2,'0');
       cards.filter(c=>c.deadline===ds).forEach(c=>{
-        const t=document.createElement('div');
-        t.className='cal-task p-'+c.priority;t.textContent=c.title;t.title=c.title;
-        t.onclick=()=>openEditCardModal(c.id);el.appendChild(t);
+        const t=document.createElement('div');t.className='cal-task p-'+c.priority;
+        t.textContent=c.title;t.onclick=()=>openEditCardModal(c.id);el.appendChild(t);
       });
     }
     grid.appendChild(el);
@@ -603,7 +846,7 @@ function renderCalendar(){
 }
 
 document.getElementById('modal-bg').addEventListener('click',e=>{if(e.target===e.currentTarget)closeModal();});
-loadProjects();
+bootstrap();
 </script>
 </body>
 </html>
