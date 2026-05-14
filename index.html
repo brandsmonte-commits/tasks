@@ -412,6 +412,10 @@ function renderOverview(){
   if(ovFilterProj!=='all') filtered=filtered.filter(c=>c.proj_id===ovFilterProj);
   if(ovFilterPri!=='all') filtered=filtered.filter(c=>c.priority===ovFilterPri);
 
+  // Sort by priority: high → mid → low
+  const priOrder={high:0,mid:1,low:2};
+  filtered.sort((a,b)=>(priOrder[a.priority]??1)-(priOrder[b.priority]??1));
+
   // Group by column title
   const content=document.getElementById('ov-content');
   if(!filtered.length){content.innerHTML='<div class="ov-empty">Нет задач</div>';return;}
