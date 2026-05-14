@@ -412,9 +412,16 @@ function renderOverview(){
   if(ovFilterProj!=='all') filtered=filtered.filter(c=>c.proj_id===ovFilterProj);
   if(ovFilterPri!=='all') filtered=filtered.filter(c=>c.priority===ovFilterPri);
 
-  // Sort by priority: high → mid → low
+  // Sort: done by completed_at desc, others by priority
   const priOrder={high:0,mid:1,low:2};
-  filtered.sort((a,b)=>(priOrder[a.priority]??1)-(priOrder[b.priority]??1));
+  filtered.sort((a,b)=>{
+    const aCol=allColumns.find(x=>x.id===a.col);
+    const bCol=allColumns.find(x=>x.id===b.col);
+    const aDone=aCol&&aCol.title==='Готово';
+    const bDone=bCol&&bCol.title==='Готово';
+    if(aDone&&bDone) return new Date(b.completed_at||0)-new Date(a.completed_at||0);
+    return (priOrder[a.priority]??1)-(priOrder[b.priority]??1);
+  });
 
   // Group by column title
   const content=document.getElementById('ov-content');
@@ -591,7 +598,10 @@ function renderBoard(){
   const board=document.getElementById('board');board.innerHTML='';
   const filtered=currentFilter==='all'?cards:cards.filter(c=>c.priority===currentFilter);
   columns.forEach(col=>{
-    const colCards=filtered.filter(c=>c.col===col.id);
+    const priOrder={high:0,mid:1,low:2};
+    let colCards=filtered.filter(c=>c.col===col.id);
+    if(isDoneCol(col.id)) colCards.sort((a,b)=>new Date(b.completed_at||0)-new Date(a.completed_at||0));
+    else colCards.sort((a,b)=>(priOrder[a.priority]??1)-(priOrder[b.priority]??1));
     const allCount=cards.filter(c=>c.col===col.id).length;
     const el=document.createElement('div');el.className='column';el.dataset.colId=col.id;
     el.innerHTML=`
@@ -638,13 +648,21 @@ function renderBoard(){
   addBtn.innerHTML='+ Добавить статус';addBtn.onclick=openColModal;board.appendChild(addBtn);
 }
 
+function isDoneCol(colId){
+  const col=allColumns.find(c=>c.id===colId);
+  return col&&col.title==='Готово';
+}
+
 async function dropCard(colId){
   if(!dragCardId)return;
   const card=cards.find(c=>c.id===dragCardId);
   if(card&&card.col!==colId){
-    card.col=colId;
-    const gc=allCards.find(c=>c.id===dragCardId);if(gc)gc.col=colId;
-    renderBoard();await api('cards?id=eq.'+dragCardId,'PATCH',{col:colId});
+    const patch={col:colId};
+    if(isDoneCol(colId)) patch.completed_at=new Date().toISOString();
+    else if(isDoneCol(card.col)) patch.completed_at=null;
+    Object.assign(card,patch);
+    const gc=allCards.find(c=>c.id===dragCardId);if(gc)Object.assign(gc,patch);
+    renderBoard();await api('cards?id=eq.'+dragCardId,'PATCH',patch);
   }
   dragCardId=null;
 }
@@ -796,11 +814,15 @@ async function saveModal(){
   } else if(modalMode==='card'||modalMode==='card-ov'){
     const title=document.getElementById('inp-ctitle').value.trim();if(!title)return;
     const projId=modalMode==='card-ov'?editingProjId:currentProj;
+    const newCol=document.getElementById('inp-ccol').value;
+    const prevCard=editingId?allCards.find(c=>c.id===editingId):null;
     const body={proj_id:projId,title,
       description:document.getElementById('inp-cdesc').value.trim(),
       priority:document.getElementById('inp-cpri').value,
-      col:document.getElementById('inp-ccol').value,
+      col:newCol,
       deadline:document.getElementById('inp-deadline').value||null};
+    if(isDoneCol(newCol)&&(!prevCard||!isDoneCol(prevCard.col))) body.completed_at=new Date().toISOString();
+    else if(!isDoneCol(newCol)&&prevCard&&isDoneCol(prevCard.col)) body.completed_at=null;
     if(editingId){
       await api('cards?id=eq.'+editingId,'PATCH',body);
       [allCards,cards].forEach(arr=>{const i=arr.findIndex(c=>c.id===editingId);if(i>-1)arr[i]={...arr[i],...body};});
