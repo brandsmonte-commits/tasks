@@ -20,6 +20,19 @@
 body{font-family:'Geist',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;display:flex;flex-direction:column;}
 
 /* SIDEBAR */
+
+/* LOCK SCREEN */
+.lock-screen{position:fixed;inset:0;background:var(--bg);display:flex;align-items:center;justify-content:center;z-index:999;}
+.lock-box{background:var(--bg2);border:1px solid var(--border2);border-radius:var(--rl);padding:32px;width:320px;text-align:center;}
+.lock-logo{font-size:20px;font-weight:600;letter-spacing:-0.5px;margin-bottom:8px;}
+.lock-logo span{color:var(--accent);}
+.lock-sub{font-size:13px;color:var(--text3);margin-bottom:24px;}
+.lock-input{width:100%;background:var(--bg3);border:1px solid var(--border2);border-radius:var(--r);color:var(--text);font-family:'Geist',sans-serif;font-size:14px;padding:10px 12px;outline:none;text-align:center;letter-spacing:2px;margin-bottom:10px;}
+.lock-input:focus{border-color:var(--accent);}
+.lock-btn{width:100%;background:var(--accent);color:#fff;border:none;border-radius:var(--r);padding:10px;font-family:'Geist',sans-serif;font-size:14px;font-weight:500;cursor:pointer;transition:background .15s;}
+.lock-btn:hover{background:var(--accent2);}
+.lock-error{font-size:12px;color:var(--high);margin-top:8px;min-height:18px;}
+
 .sidebar{position:fixed;left:0;top:0;bottom:0;width:200px;background:var(--bg2);border-right:1px solid var(--border);display:flex;flex-direction:column;z-index:30;}
 .sidebar-logo{height:52px;display:flex;align-items:center;padding:0 16px;border-bottom:1px solid var(--border);font-size:14px;font-weight:600;letter-spacing:-0.3px;}
 .sidebar-logo span{color:var(--accent);}
@@ -188,6 +201,18 @@ body{font-family:'Geist',sans-serif;background:var(--bg);color:var(--text);min-h
 </head>
 <body>
 
+
+<div id="lock-screen" class="lock-screen">
+  <div class="lock-box">
+    <div class="lock-logo">tasks<span>.</span></div>
+    <div class="lock-sub">Введите пароль для входа</div>
+    <input class="lock-input" id="lock-input" type="password" placeholder="••••••••"
+      onkeydown="if(event.key==='Enter')checkPassword()" />
+    <button class="lock-btn" onclick="checkPassword()">Войти</button>
+    <div class="lock-error" id="lock-error"></div>
+  </div>
+</div>
+
 <div class="sidebar">
   <div class="sidebar-logo">tasks<span>.</span></div>
   <div class="sidebar-nav">
@@ -203,6 +228,9 @@ body{font-family:'Geist',sans-serif;background:var(--bg);color:var(--text);min-h
   <div class="sidebar-bottom">
     <button class="nav-item" style="width:100%" onclick="openProjModal()">
       <span class="ni-icon">+</span> Новый проект
+    </button>
+    <button class="nav-item" style="width:100%;margin-top:4px;color:var(--text3)" onclick="logout()">
+      <span class="ni-icon">&#x2192;</span> Выйти
     </button>
   </div>
 </div>
@@ -872,7 +900,36 @@ function renderCalendar(){
 }
 
 document.getElementById('modal-bg').addEventListener('click',e=>{if(e.target===e.currentTarget)closeModal();});
-bootstrap();
+
+// ── AUTH ───────────────────────────────────────────────────
+const PASSWORD = 'tasks2024'; // ← поменяй на свой пароль
+const AUTH_KEY = 'tasks_auth';
+
+function checkPassword(){
+  const val=document.getElementById('lock-input').value;
+  if(val===PASSWORD){
+    localStorage.setItem(AUTH_KEY,'1');
+    document.getElementById('lock-screen').style.display='none';
+    bootstrap();
+  } else {
+    document.getElementById('lock-error').textContent='Неверный пароль';
+    document.getElementById('lock-input').value='';
+    setTimeout(()=>document.getElementById('lock-error').textContent='',2000);
+  }
+}
+
+function logout(){localStorage.removeItem(AUTH_KEY);location.reload();}
+
+function initAuth(){
+  if(localStorage.getItem(AUTH_KEY)==='1'){
+    document.getElementById('lock-screen').style.display='none';
+    bootstrap();
+  } else {
+    setTimeout(()=>document.getElementById('lock-input').focus(),100);
+  }
+}
+
+initAuth();
 </script>
 </body>
 </html>
