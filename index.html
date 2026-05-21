@@ -524,7 +524,14 @@ async function openOvCardEdit(cardId){
     <label>Статус</label>
     <select id="inp-ccol">${colOpts}</select>
     <label>Дедлайн</label>
-    <input id="inp-deadline" type="date" value="${c.deadline||''}" />`;
+    <input id="inp-deadline" type="date" value="${c.deadline||''}" />
+    <label>Повторение</label>
+    <select id="inp-recurring">
+      <option value=""${!c.recurring?' selected':''}>Без повторения</option>
+      <option value="daily"${c.recurring==='daily'?' selected':''}>Каждый день</option>
+      <option value="weekly"${c.recurring==='weekly'?' selected':''}>Каждую неделю</option>
+      <option value="monthly"${c.recurring==='monthly'?' selected':''}>Каждый месяц</option>
+    </select>`;
   document.getElementById('modal-left-btn').innerHTML=
     `<button class="btn btn-danger" onclick="delCardGlobal('${cardId}')">Удалить</button>`;
   openModal();setTimeout(()=>document.getElementById('inp-ctitle').focus(),60);
@@ -882,7 +889,7 @@ async function saveModal(){
     columns.push(res[0]);allColumns.push(res[0]);renderBoard();closeModal();
   } else if(modalMode==='card'||modalMode==='card-ov'){
     const title=document.getElementById('inp-ctitle').value.trim();if(!title)return;
-    const projId=modalMode==='card-ov'?editingProjId:currentProj;
+    const projId=modalMode==='card-ov'?(document.getElementById('inp-cproj')?.value||editingProjId):currentProj;
     const newCol=document.getElementById('inp-ccol').value;
     const prevCard=editingId?allCards.find(c=>c.id===editingId):null;
     const body={proj_id:projId,title,
