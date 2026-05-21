@@ -197,6 +197,97 @@ body{font-family:'Geist',sans-serif;background:var(--bg);color:var(--text);min-h
 .loading{display:flex;align-items:center;justify-content:center;height:200px;color:var(--text3);font-size:13px;gap:8px;}
 .spinner{width:16px;height:16px;border:2px solid var(--border2);border-top-color:var(--accent);border-radius:50%;animation:spin .7s linear infinite;}
 @keyframes spin{to{transform:rotate(360deg);}}
+
+/* ── MOBILE ─────────────────────────────────────────────── */
+@media(max-width:768px){
+  /* Hide desktop sidebar */
+  .sidebar{display:none;}
+  .main{margin-left:0;padding-bottom:70px;}
+
+  /* Bottom tab bar */
+  .mobile-tabbar{display:flex;position:fixed;bottom:0;left:0;right:0;height:62px;background:var(--bg2);border-top:1px solid var(--border);z-index:40;safe-area-inset-bottom:env(safe-area-inset-bottom);}
+  .mobile-tab{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;background:none;border:none;cursor:pointer;color:var(--text3);font-family:'Geist',sans-serif;font-size:10px;font-weight:500;transition:color .15s;padding-bottom:env(safe-area-inset-bottom);}
+  .mobile-tab.active{color:var(--accent);}
+  .mobile-tab-icon{font-size:20px;line-height:1;}
+
+  /* Mobile project drawer */
+  .mobile-proj-drawer{display:none;position:fixed;inset:0;z-index:50;background:rgba(0,0,0,0.6);}
+  .mobile-proj-drawer.open{display:block;}
+  .mobile-proj-panel{position:absolute;bottom:0;left:0;right:0;background:var(--bg2);border-radius:20px 20px 0 0;padding:12px 0 80px;max-height:80vh;overflow-y:auto;}
+  .mobile-proj-handle{width:40px;height:4px;background:var(--border2);border-radius:2px;margin:0 auto 16px;}
+  .mobile-proj-title{font-size:13px;font-weight:500;color:var(--text2);padding:0 16px 8px;text-transform:uppercase;letter-spacing:.5px;font-family:'Geist Mono',monospace;}
+  .mobile-proj-item{display:flex;align-items:center;gap:12px;padding:14px 16px;cursor:pointer;border:none;background:none;width:100%;text-align:left;font-family:'Geist',sans-serif;font-size:15px;color:var(--text);transition:background .15s;}
+  .mobile-proj-item:active{background:var(--bg3);}
+  .mobile-proj-item .mpd{width:10px;height:10px;border-radius:50%;flex-shrink:0;}
+  .mobile-proj-item .mpm{font-size:11px;color:var(--text3);margin-left:auto;font-family:'Geist Mono',monospace;}
+  .mobile-proj-add{display:flex;align-items:center;gap:12px;padding:14px 16px;cursor:pointer;border:none;background:none;width:100%;text-align:left;font-family:'Geist',sans-serif;font-size:15px;color:var(--accent);border-top:1px solid var(--border);}
+
+  /* Topbar mobile */
+  .topbar{padding:0 16px;height:48px;}
+  .topbar-title{font-size:16px;}
+  .breadcrumb{font-size:13px;}
+  #topbar-actions{display:none;}
+
+  /* Overview mobile */
+  .overview-page{padding:16px;}
+  .overview-stats{grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:16px;}
+  .stat-num{font-size:24px;}
+  .stat-label{font-size:10px;}
+  .stat-card{padding:14px;}
+  .ov-filters{gap:6px;margin-bottom:12px;}
+  .ov-filter-group{flex-wrap:wrap;gap:4px;}
+  .pill{font-size:11px;padding:5px 10px;}
+  .pill-sep{display:none;}
+  .ov-task{flex-wrap:wrap;gap:8px;padding:12px;}
+  .ov-task-title{font-size:14px;width:100%;}
+  .ov-task-desc{display:none;}
+  .ov-proj-tag{font-size:10px;}
+
+  /* Projects mobile */
+  .page{padding:16px;}
+  .page-header{margin-bottom:14px;}
+  .page-title{font-size:16px;}
+  .proj-grid{grid-template-columns:1fr 1fr;gap:8px;}
+  .proj-card{padding:14px;}
+  .proj-name{font-size:13px;}
+  .proj-del{opacity:1;}
+  .add-proj-card{padding:14px;font-size:13px;}
+
+  /* Board mobile */
+  .board-nav{padding:8px 12px;gap:6px;}
+  .nav-tab{font-size:12px;padding:6px 10px;}
+  .board-nav > div{gap:6px;}
+  .btn{font-size:12px;padding:6px 10px;}
+  .filter-bar{padding:8px 12px;gap:5px;overflow-x:auto;flex-wrap:nowrap;}
+  .filter-label{display:none;}
+  .filter-btn{font-size:11px;padding:5px 10px;white-space:nowrap;flex-shrink:0;}
+  .board-wrap{padding:12px;}
+  .board{gap:8px;}
+  .column{flex:0 0 78vw;}
+  .col-drag-handle{display:none;}
+  .col-del-btn{opacity:1;}
+  .card{padding:12px;}
+  .card-title{font-size:14px;}
+
+  /* Calendar mobile */
+  .cal-wrap{padding:12px;}
+  .cal-dow{font-size:9px;padding:5px 2px;}
+  .cal-day{min-height:60px;padding:4px;}
+  .cal-day-num{font-size:11px;}
+  .cal-task{font-size:9px;padding:1px 3px;}
+
+  /* Modal mobile */
+  .modal-bg{align-items:flex-end;}
+  .modal{width:100%;max-width:100%;border-radius:20px 20px 0 0;padding:20px 16px;max-height:88vh;padding-bottom:calc(20px + env(safe-area-inset-bottom));}
+  .modal input,.modal textarea,.modal select{font-size:16px;padding:10px 12px;}/* prevent iOS zoom */
+  .modal-btns{flex-direction:row;}
+
+  /* FAB add button */
+  .mobile-fab{display:flex;position:fixed;bottom:74px;right:16px;width:52px;height:52px;border-radius:50%;background:var(--accent);color:#fff;border:none;font-size:26px;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 4px 20px rgba(124,111,255,0.4);z-index:35;}
+}
+@media(min-width:769px){
+  .mobile-tabbar,.mobile-proj-drawer,.mobile-fab{display:none!important;}
+}
 </style>
 </head>
 <body>
@@ -212,6 +303,32 @@ body{font-family:'Geist',sans-serif;background:var(--bg);color:var(--text);min-h
     <div class="lock-error" id="lock-error"></div>
   </div>
 </div>
+
+<!-- MOBILE TAB BAR -->
+<div class="mobile-tabbar" id="mobile-tabbar">
+  <button class="mobile-tab active" id="mtab-overview" onclick="showOverview()">
+    <span class="mobile-tab-icon">&#9632;</span>Обзор
+  </button>
+  <button class="mobile-tab" id="mtab-projects" onclick="mobileShowProjects()">
+    <span class="mobile-tab-icon">&#9638;</span>Проекты
+  </button>
+  <button class="mobile-tab" id="mtab-board" onclick="mobileShowBoard()" style="display:none" id="mtab-board">
+    <span class="mobile-tab-icon">&#9776;</span>Доска
+  </button>
+</div>
+
+<!-- MOBILE PROJECT DRAWER -->
+<div class="mobile-proj-drawer" id="mobile-proj-drawer" onclick="if(event.target===this)closeProjDrawer()">
+  <div class="mobile-proj-panel">
+    <div class="mobile-proj-handle"></div>
+    <div class="mobile-proj-title">Проекты</div>
+    <div id="mobile-proj-list"></div>
+    <button class="mobile-proj-add" onclick="closeProjDrawer();openProjModal()">+ Новый проект</button>
+  </div>
+</div>
+
+<!-- MOBILE FAB -->
+<button class="mobile-fab" id="mobile-fab" onclick="onFabClick()" style="display:none">+</button>
 
 <div class="sidebar">
   <div class="sidebar-logo">tasks<span>.</span></div>
@@ -982,6 +1099,83 @@ function initAuth(){
     setTimeout(()=>document.getElementById('lock-input').focus(),100);
   }
 }
+
+// ── MOBILE NAV ─────────────────────────────────────────────
+function isMobile(){return window.innerWidth<=768;}
+
+function setMobileTab(id){
+  document.querySelectorAll('.mobile-tab').forEach(t=>t.classList.remove('active'));
+  const el=document.getElementById(id);if(el)el.classList.add('active');
+}
+
+function mobileShowProjects(){
+  if(!isMobile()){showProjectsScreen();return;}
+  // Show drawer with project list
+  const list=document.getElementById('mobile-proj-list');
+  list.innerHTML='';
+  projects.forEach(p=>{
+    const projCards=allCards.filter(c=>c.proj_id===p.id);
+    const doneColIds=allColumns.filter(c=>c.proj_id===p.id&&c.title==='Готово').map(c=>c.id);
+    const done=projCards.filter(c=>doneColIds.includes(c.col)).length;
+    const btn=document.createElement('button');
+    btn.className='mobile-proj-item';
+    btn.innerHTML=`<span class="mpd" style="background:${p.color}"></span>${p.name}<span class="mpm">${projCards.length} / ${done} ✓</span>`;
+    btn.onclick=()=>{closeProjDrawer();openProject(p.id,p.name,p.color);};
+    list.appendChild(btn);
+  });
+  document.getElementById('mobile-proj-drawer').classList.add('open');
+}
+
+function closeProjDrawer(){
+  document.getElementById('mobile-proj-drawer').classList.remove('open');
+}
+
+function mobileShowBoard(){
+  // Already on board, just scroll to top
+  window.scrollTo(0,0);
+}
+
+function onFabClick(){
+  const active=document.querySelector('.screen.active');
+  if(!active)return;
+  const id=active.id;
+  if(id==='screen-overview') openProjModal();
+  else if(id==='screen-projects') openProjModal();
+  else if(id==='screen-board') openCardModal(columns[0]?.id||null);
+}
+
+// Patch showOverview to update mobile tabs
+const _origShowOverview=showOverview;
+showOverview=function(){
+  _origShowOverview();
+  if(isMobile()){
+    setMobileTab('mtab-overview');
+    document.getElementById('mobile-fab').style.display='none';
+    document.getElementById('mtab-board').style.display='none';
+  }
+};
+
+// Patch showProjectsScreen for mobile
+const _origShowProjects=showProjectsScreen;
+showProjectsScreen=function(){
+  _origShowProjects();
+  if(isMobile()){
+    setMobileTab('mtab-projects');
+    document.getElementById('mobile-fab').style.display='flex';
+    document.getElementById('mtab-board').style.display='none';
+  }
+};
+
+// Patch openProject for mobile
+const _origOpenProject=openProject;
+openProject=async function(projId,name,color){
+  await _origOpenProject(projId,name,color);
+  if(isMobile()){
+    setMobileTab('mtab-board');
+    document.getElementById('mtab-board').style.display='flex';
+    document.getElementById('mobile-fab').style.display='flex';
+  }
+};
 
 initAuth();
 </script>
