@@ -681,16 +681,49 @@ function isDoneCol(colId){
   return col&&col.title==='Готово';
 }
 
+function nextDeadline(deadline, recurring){
+  if(!deadline||!recurring)return null;
+  const d=new Date(deadline);
+  if(recurring==='daily') d.setDate(d.getDate()+1);
+  else if(recurring==='weekly') d.setDate(d.getDate()+7);
+  else if(recurring==='monthly') d.setMonth(d.getMonth()+1);
+  return d.toISOString().split('T')[0];
+}
+
+async function createRecurringCopy(card){
+  if(!card.recurring)return;
+  // Find first column (backlog) of this project
+  const projCols=allColumns.filter(c=>c.proj_id===card.proj_id).sort((a,b)=>a.position-b.position);
+  const firstCol=projCols[0];if(!firstCol)return;
+  const newCard={
+    proj_id:card.proj_id,
+    title:card.title,
+    description:card.description,
+    priority:card.priority,
+    col:firstCol.id,
+    recurring:card.recurring,
+    deadline:nextDeadline(card.deadline,card.recurring),
+    completed_at:null
+  };
+  const res=await api('cards','POST',newCard);
+  if(res&&res[0]){allCards.push(res[0]);if(card.proj_id===currentProj)cards.push(res[0]);}
+}
+
 async function dropCard(colId){
   if(!dragCardId)return;
   const card=cards.find(c=>c.id===dragCardId);
   if(card&&card.col!==colId){
+    const wasDone=isDoneCol(card.col);
+    const nowDone=isDoneCol(colId);
     const patch={col:colId};
-    if(isDoneCol(colId)) patch.completed_at=new Date().toISOString();
-    else if(isDoneCol(card.col)) patch.completed_at=null;
+    if(nowDone) patch.completed_at=new Date().toISOString();
+    else if(wasDone) patch.completed_at=null;
     Object.assign(card,patch);
     const gc=allCards.find(c=>c.id===dragCardId);if(gc)Object.assign(gc,patch);
-    renderBoard();await api('cards?id=eq.'+dragCardId,'PATCH',patch);
+    renderBoard();
+    await api('cards?id=eq.'+dragCardId,'PATCH',patch);
+    if(nowDone&&!wasDone&&card.recurring) await createRecurringCopy(card);
+    renderBoard();renderOverview();
   }
   dragCardId=null;
 }
@@ -755,10 +788,11 @@ function cardHTML(c){
   const bl=c.priority==='high'?'Высокий':c.priority==='mid'?'Средний':'Низкий';
   const dc=c.deadline?deadlineClass(c.deadline):'';
   const dlHTML=c.deadline?`<span class="deadline-badge ${dc}">${fmtDate(c.deadline)}</span>`:'';
+  const recIcon=c.recurring?`<span title="${c.recurring==='daily'?'Каждый день':c.recurring==='weekly'?'Каждую неделю':'Каждый месяц'}" style="font-size:11px;color:var(--text3)">&#x21bb;</span>`:'';
   return`<div class="card" draggable="true" data-id="${c.id}">
     <div class="card-title">${c.title}</div>
     ${c.description?`<div class="card-desc">${c.description}</div>`:''}
-    <div class="card-footer"><span class="badge ${bc}">${bl}</span>${dlHTML}</div>
+    <div class="card-footer"><span class="badge ${bc}">${bl}</span>${dlHTML}${recIcon}</div>
   </div>`;
 }
 
@@ -819,7 +853,14 @@ function cardFormHTML(c,cols){
     <label>Статус</label>
     <select id="inp-ccol">${colOpts}</select>
     <label>Дедлайн</label>
-    <input id="inp-deadline" type="date" value="${c?.deadline||''}" />`;
+    <input id="inp-deadline" type="date" value="${c?.deadline||''}" />
+    <label>Повторение</label>
+    <select id="inp-recurring">
+      <option value=""${!c?.recurring?' selected':''}>Без повторения</option>
+      <option value="daily"${c?.recurring==='daily'?' selected':''}>Каждый день</option>
+      <option value="weekly"${c?.recurring==='weekly'?' selected':''}>Каждую неделю</option>
+      <option value="monthly"${c?.recurring==='monthly'?' selected':''}>Каждый месяц</option>
+    </select>`;
 }
 
 function selColor(c,el){
@@ -848,12 +889,18 @@ async function saveModal(){
       description:document.getElementById('inp-cdesc').value.trim(),
       priority:document.getElementById('inp-cpri').value,
       col:newCol,
-      deadline:document.getElementById('inp-deadline').value||null};
+      deadline:document.getElementById('inp-deadline').value||null,
+      recurring:document.getElementById('inp-recurring').value||null};
     if(isDoneCol(newCol)&&(!prevCard||!isDoneCol(prevCard.col))) body.completed_at=new Date().toISOString();
     else if(!isDoneCol(newCol)&&prevCard&&isDoneCol(prevCard.col)) body.completed_at=null;
     if(editingId){
+      const prevCard=allCards.find(c=>c.id===editingId);
+      const wasInDone=prevCard&&isDoneCol(prevCard.col);
       await api('cards?id=eq.'+editingId,'PATCH',body);
       [allCards,cards].forEach(arr=>{const i=arr.findIndex(c=>c.id===editingId);if(i>-1)arr[i]={...arr[i],...body};});
+      if(!wasInDone&&isDoneCol(body.col)&&body.recurring){
+        await createRecurringCopy({...body,id:editingId});
+      }
     } else {
       const res=await api('cards','POST',body);
       allCards.push(res[0]);cards.push(res[0]);
