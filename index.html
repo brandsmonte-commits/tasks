@@ -173,7 +173,8 @@ body{font-family:'Geist',sans-serif;background:var(--bg);color:var(--text);min-h
 .cal-month{font-size:16px;font-weight:600;letter-spacing:-.3px;}
 .cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:1px;background:var(--border);border:1px solid var(--border);border-radius:var(--rl);overflow:hidden;}
 .cal-dow{background:var(--bg2);padding:8px;text-align:center;font-size:11px;color:var(--text3);font-family:'Geist Mono',monospace;text-transform:uppercase;letter-spacing:.5px;}
-.cal-day{background:var(--bg2);min-height:88px;padding:7px;}
+.cal-day{background:var(--bg2);min-height:88px;padding:7px;cursor:pointer;transition:background .15s;}
+.cal-day:not(.other-month):hover{background:var(--bg3);}
 .cal-day.other-month{background:var(--bg);}
 .cal-day.today{background:rgba(124,111,255,0.07);}
 .cal-day-num{font-size:12px;color:var(--text3);font-family:'Geist Mono',monospace;margin-bottom:4px;}
@@ -183,6 +184,43 @@ body{font-family:'Geist',sans-serif;background:var(--bg);color:var(--text);min-h
 .cal-task.p-high{background:var(--high-bg);color:var(--high);}
 .cal-task.p-mid{background:var(--mid-bg);color:var(--mid);}
 .cal-task.p-low{background:var(--low-bg);color:var(--low);}
+
+/* STATUS PICKER */
+.status-picker{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px;}
+.status-chip{--sc:var(--text2);font-family:'Geist',sans-serif;font-size:12px;font-weight:500;display:inline-flex;align-items:center;gap:6px;padding:7px 12px;border-radius:99px;border:1px solid var(--border2);background:var(--bg3);color:var(--text2);cursor:pointer;transition:all .15s;}
+.status-chip:hover{border-color:var(--sc);color:var(--text);}
+.status-chip .sc-dot{width:8px;height:8px;border-radius:50%;background:var(--sc);flex-shrink:0;}
+.status-chip.active{background:color-mix(in srgb,var(--sc) 18%,transparent);border-color:var(--sc);color:var(--text);font-weight:600;box-shadow:0 0 0 1px var(--sc) inset;}
+.status-chip.active::after{content:'\2713';font-size:11px;color:var(--sc);}
+.modal-status-badge{display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:500;padding:3px 10px;border-radius:99px;margin-left:8px;vertical-align:middle;font-family:'Geist Mono',monospace;}
+
+/* OVERVIEW VIEW TOGGLE */
+.view-toggle{display:inline-flex;background:var(--bg2);border:1px solid var(--border2);border-radius:var(--r);padding:2px;margin-left:auto;}
+.view-toggle button{font-family:'Geist',sans-serif;font-size:12px;font-weight:500;background:transparent;border:none;color:var(--text3);padding:5px 12px;border-radius:8px;cursor:pointer;transition:all .15s;}
+.view-toggle button:hover{color:var(--text2);}
+.view-toggle button.active{background:var(--bg4);color:var(--text);}
+
+/* OVERVIEW CALENDAR */
+.ovc-header{display:flex;align-items:center;gap:8px;margin-bottom:12px;}
+.ovc-month{font-size:16px;font-weight:600;letter-spacing:-.3px;min-width:150px;}
+.ovc-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:1px;background:var(--border);border:1px solid var(--border);border-radius:var(--rl);overflow:hidden;}
+.ovc-day{background:var(--bg2);min-height:92px;padding:6px;cursor:pointer;transition:background .15s;display:flex;flex-direction:column;gap:2px;min-width:0;}
+.ovc-day:hover{background:var(--bg3);}
+.ovc-day.other-month{background:var(--bg);}
+.ovc-day.other-month .cal-day-num{opacity:.5;}
+.ovc-day.today .cal-day-num{color:var(--accent);font-weight:600;}
+.ovc-day.selected{background:rgba(124,111,255,0.12);box-shadow:inset 0 0 0 1px var(--accent);}
+.ovc-day.has-overdue .cal-day-num::after{content:'';display:inline-block;width:5px;height:5px;border-radius:50%;background:var(--high);margin-left:4px;vertical-align:middle;}
+.ovc-task{font-size:10px;border-radius:4px;padding:2px 5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;background:var(--bg4);color:var(--text2);border-left:2px solid var(--pc,var(--border2));}
+.ovc-task:hover{color:var(--text);}
+.ovc-task.done{text-decoration:line-through;opacity:.5;}
+.ovc-task.p-high{color:var(--high);}
+.ovc-more{font-size:10px;color:var(--text3);padding-left:4px;}
+.ovc-panel{margin-top:16px;}
+.ovc-panel-head{display:flex;align-items:center;gap:10px;margin-bottom:8px;}
+.ovc-panel-title{font-size:14px;font-weight:600;letter-spacing:-.2px;}
+.ovc-panel-title span{color:var(--text3);font-weight:400;font-size:12px;margin-left:6px;}
+.ovc-status{font-size:10px;padding:2px 8px;border-radius:99px;font-family:'Geist Mono',monospace;white-space:nowrap;border:1px solid;}
 
 /* MODAL */
 .modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.65);align-items:center;justify-content:center;z-index:100;backdrop-filter:blur(4px);}
@@ -279,6 +317,12 @@ body{font-family:'Geist',sans-serif;background:var(--bg);color:var(--text);min-h
   .cal-day{min-height:60px;padding:4px;}
   .cal-day-num{font-size:11px;}
   .cal-task{font-size:9px;padding:1px 3px;}
+  .ovc-day{min-height:52px;padding:4px;}
+  .ovc-task{font-size:0;width:7px;height:7px;padding:0;border:none;border-radius:50%;background:var(--pc,var(--text3));display:inline-block;margin-right:2px;}
+  .ovc-day .ovc-dots{display:flex;flex-wrap:wrap;gap:2px;}
+  .ovc-more{font-size:9px;padding:0;}
+  .view-toggle{margin-left:0;}
+  .status-chip{font-size:14px;padding:9px 14px;}
 
   /* Modal mobile */
   .modal-bg{align-items:flex-end;}
@@ -449,6 +493,36 @@ let modalMode=null, editingId=null, editingProjId=null;
 let selectedColor=COLORS[0], targetCol=null;
 // Overview filters
 let ovFilterPri='all', ovFilterProj='all', ovFilterStatus='all';
+let ovView=localStorageGet('tasks_ov_view')||'list', ovCalDate=new Date(), ovSelDay=null;
+const STATUS_COLORS=['#888888','#4db8ff','#f5a623','#c084fc','#7c6fff','#ff5f5f'];
+
+function localStorageGet(k){try{return localStorage.getItem(k);}catch(e){return null;}}
+function localStorageSet(k,v){try{localStorage.setItem(k,v);}catch(e){}}
+function esc(s){return String(s??'').replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));}
+function dateStr(d){return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}
+
+// Цвет статуса: «Готово» — зелёный, остальные — по позиции колонки
+function statusColor(col){
+  if(!col)return 'var(--text3)';
+  if(col.title==='Готово')return '#4caf7d';
+  const projCols=allColumns.filter(c=>c.proj_id===col.proj_id).sort((a,b)=>a.position-b.position);
+  const i=Math.max(0,projCols.findIndex(c=>c.id===col.id));
+  return STATUS_COLORS[i%STATUS_COLORS.length];
+}
+
+function statusPickerHTML(cols,selectedId){
+  const sorted=[...cols].sort((a,b)=>a.position-b.position);
+  const sel=sorted.some(c=>c.id===selectedId)?selectedId:sorted[0]?.id||'';
+  return `<div class="status-picker" id="status-picker">${sorted.map(col=>
+    `<button type="button" class="status-chip${col.id===sel?' active':''}" style="--sc:${statusColor(col)}" data-col="${col.id}" onclick="pickStatus('${col.id}')"><span class="sc-dot"></span>${esc(col.title)}</button>`
+  ).join('')||'<span style="font-size:12px;color:var(--text3)">Нет статусов</span>'}</div>
+  <input type="hidden" id="inp-ccol" value="${sel}" />`;
+}
+
+function pickStatus(colId){
+  document.getElementById('inp-ccol').value=colId;
+  document.querySelectorAll('#status-picker .status-chip').forEach(b=>b.classList.toggle('active',b.dataset.col===colId));
+}
 
 async function api(path,method='GET',body=null){
   const opts={method,headers:{'apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY,'Content-Type':'application/json','Prefer':method==='POST'?'return=representation':''}};
@@ -550,6 +624,10 @@ function renderOverview(){
       <button class="pill p-high${ovFilterPri==='high'?' active':''}" onclick="setOvPri('high')">Высокий</button>
       <button class="pill p-mid${ovFilterPri==='mid'?' active':''}" onclick="setOvPri('mid')">Средний</button>
       <button class="pill p-low${ovFilterPri==='low'?' active':''}" onclick="setOvPri('low')">Низкий</button>
+    </div>
+    <div class="view-toggle">
+      <button class="${ovView==='list'?'active':''}" onclick="setOvView('list')">&#9776; Список</button>
+      <button class="${ovView==='calendar'?'active':''}" onclick="setOvView('calendar')">&#9638; Календарь</button>
     </div>`;
 
   // Filter cards
@@ -572,8 +650,10 @@ function renderOverview(){
     return (priOrder[a.priority]??1)-(priOrder[b.priority]??1);
   });
 
-  // Group by column title
   const content=document.getElementById('ov-content');
+  if(ovView==='calendar'){renderOvCalendar(filtered,doneColIds);return;}
+
+  // Group by column title
   if(!filtered.length){content.innerHTML='<div class="ov-empty">Нет задач</div>';return;}
 
   // Group by column
@@ -600,7 +680,7 @@ function renderOverview(){
   });
 }
 
-function ovTaskHTML(c){
+function ovTaskHTML(c,showStatus){
   const proj=projects.find(p=>p.id===c.proj_id);
   const bc=c.priority==='high'?'b-high':c.priority==='mid'?'b-mid':'b-low';
   const bl=c.priority==='high'?'Высокий':c.priority==='mid'?'Средний':'Низкий';
@@ -608,13 +688,86 @@ function ovTaskHTML(c){
   const dlHTML=c.deadline?`<span class="ov-deadline ${dc}">${fmtDate(c.deadline)}</span>`:'';
   const projDot=proj?`<span style="width:6px;height:6px;border-radius:50%;background:${proj.color};display:inline-block;flex-shrink:0"></span>`:'';
   const projName=proj?`<span class="ov-proj-tag" style="border-color:${proj.color}22">${projDot} ${proj.name}</span>`:'';
+  const col=showStatus?allColumns.find(x=>x.id===c.col):null;
+  const sc=col?statusColor(col):'';
+  const statusHTML=col?`<span class="ovc-status" style="color:${sc};border-color:${sc}55">${esc(col.title)}</span>`:'';
   return`<div class="ov-task" data-id="${c.id}">
     <div class="ov-task-title">${c.title}</div>
     ${c.description?`<div class="ov-task-desc">${c.description}</div>`:''}
+    ${statusHTML}
     <span class="badge ${bc}">${bl}</span>
     ${dlHTML}
     ${projName}
   </div>`;
+}
+
+function setOvView(v){ovView=v;localStorageSet('tasks_ov_view',v);renderOverview();}
+function ovCalNav(dir){
+  if(dir===0){ovCalDate=new Date();ovSelDay=todayStr();}
+  else{ovCalDate=new Date(ovCalDate.getFullYear(),ovCalDate.getMonth()+dir,1);}
+  renderOverview();
+}
+function ovSelectDay(ds){ovSelDay=ds;renderOverview();}
+
+function renderOvCalendar(filtered,doneColIds){
+  const content=document.getElementById('ov-content');
+  const today=todayStr();
+  if(!ovSelDay)ovSelDay=today;
+  const year=ovCalDate.getFullYear(),month=ovCalDate.getMonth();
+  const byDay={};
+  filtered.forEach(c=>{if(c.deadline)(byDay[c.deadline]=byDay[c.deadline]||[]).push(c);});
+  const priOrder={high:0,mid:1,low:2};
+  Object.values(byDay).forEach(list=>list.sort((a,b)=>
+    (doneColIds.includes(a.col)-doneColIds.includes(b.col))||((priOrder[a.priority]??1)-(priOrder[b.priority]??1))));
+
+  let startDow=new Date(year,month,1).getDay()-1;if(startDow<0)startDow=6;
+  const dim=new Date(year,month+1,0).getDate();
+  const cells=Math.ceil((startDow+dim)/7)*7;
+  const mobile=isMobile();
+  let html=`<div class="ovc-header">
+      <button class="btn-icon" onclick="ovCalNav(-1)" title="Предыдущий месяц">&#8592;</button>
+      <div class="ovc-month">${MONTHS[month]} ${year}</div>
+      <button class="btn-icon" onclick="ovCalNav(1)" title="Следующий месяц">&#8594;</button>
+      <button class="btn btn-ghost" style="margin-left:4px;padding:4px 10px;font-size:11px" onclick="ovCalNav(0)">Сегодня</button>
+    </div>
+    <div class="ovc-grid">${DAYS.map(d=>`<div class="cal-dow">${d}</div>`).join('')}`;
+  for(let i=0;i<cells;i++){
+    const d=new Date(year,month,i-startDow+1);
+    const ds=dateStr(d);
+    const list=byDay[ds]||[];
+    const cls=['ovc-day'];
+    if(d.getMonth()!==month)cls.push('other-month');
+    if(ds===today)cls.push('today');
+    if(ds===ovSelDay)cls.push('selected');
+    if(ds<today&&list.some(c=>!doneColIds.includes(c.col)))cls.push('has-overdue');
+    const max=mobile?6:3;
+    const chips=list.slice(0,max).map(c=>{
+      const proj=projects.find(p=>p.id===c.proj_id);
+      const done=doneColIds.includes(c.col);
+      return `<div class="ovc-task p-${c.priority}${done?' done':''}" style="--pc:${proj?proj.color:'var(--border2)'}" title="${esc(c.title)}" onclick="event.stopPropagation();openOvCardEdit('${c.id}')">${esc(c.title)}</div>`;
+    }).join('');
+    const more=list.length>max?`<div class="ovc-more">+${list.length-max}</div>`:'';
+    html+=`<div class="${cls.join(' ')}" onclick="ovSelectDay('${ds}')">
+      <div class="cal-day-num">${d.getDate()}</div>
+      ${mobile?`<div class="ovc-dots">${chips}</div>`:chips}${more}
+    </div>`;
+  }
+  html+=`</div>`;
+
+  // Панель выбранного дня
+  const sel=new Date(ovSelDay+'T00:00:00');
+  const dow=['воскресенье','понедельник','вторник','среда','четверг','пятница','суббота'][sel.getDay()];
+  const monthsGen=['января','февраля','марта','апреля','мая','июня','июля','августа','сентября','октября','ноября','декабря'];
+  const dayList=byDay[ovSelDay]||[];
+  html+=`<div class="ovc-panel">
+    <div class="ovc-panel-head">
+      <div class="ovc-panel-title">${sel.getDate()} ${monthsGen[sel.getMonth()]}<span>${dow}${ovSelDay===today?' · сегодня':''}</span></div>
+      <button class="btn btn-primary" style="margin-left:auto" onclick="openOvNewCard('${ovSelDay}')">+ Задача на этот день</button>
+    </div>
+    <div class="ov-task-list">${dayList.length?dayList.map(c=>ovTaskHTML(c,true)).join(''):'<div class="ov-empty">На этот день задач нет</div>'}</div>
+  </div>`;
+  content.innerHTML=html;
+  content.querySelectorAll('.ov-task').forEach(el=>el.addEventListener('click',()=>openOvCardEdit(el.dataset.id)));
 }
 
 function setOvStatus(s){ovFilterStatus=ovFilterStatus===s?'all':s;renderOverview();}
@@ -623,45 +776,40 @@ function setOvPri(p){ovFilterPri=p;renderOverview();}
 
 async function openOvCardEdit(cardId){
   const c=allCards.find(x=>x.id===cardId);if(!c)return;
-  // Load columns for this project if needed
-  const projCols=allColumns.filter(x=>x.proj_id===c.proj_id);
   editingId=cardId;editingProjId=c.proj_id;modalMode='card-ov';targetCol=c.col;
-  document.getElementById('modal-title').textContent='Редактировать задачу';
-  const colOpts=projCols.map(col=>`<option value="${col.id}"${c.col===col.id?' selected':''}>${col.title}</option>`).join('');
-  const projOpts=projects.map(p=>`<option value="${p.id}"${c.proj_id===p.id?' selected':''}>${p.name}</option>`).join('');
-  document.getElementById('modal-body').innerHTML=`
-    <label>Заголовок</label>
-    <input id="inp-ctitle" type="text" value="${c.title}" />
-    <label>Описание</label>
-    <textarea id="inp-cdesc">${c.description||''}</textarea>
-    <label>Приоритет</label>
-    <select id="inp-cpri">
-      <option value="low"${c.priority==='low'?' selected':''}>Низкий</option>
-      <option value="mid"${c.priority==='mid'?' selected':''}>Средний</option>
-      <option value="high"${c.priority==='high'?' selected':''}>Высокий</option>
-    </select>
-    <label>Проект</label>
-    <select id="inp-cproj" onchange="refreshColOpts(this.value,'${c.col}')">${projOpts}</select>
-    <label>Статус</label>
-    <select id="inp-ccol">${colOpts}</select>
-    <label>Дедлайн</label>
-    <input id="inp-deadline" type="date" value="${c.deadline||''}" />
-    <label>Повторение</label>
-    <select id="inp-recurring">
-      <option value=""${!c.recurring?' selected':''}>Без повторения</option>
-      <option value="daily"${c.recurring==='daily'?' selected':''}>Каждый день</option>
-      <option value="weekly"${c.recurring==='weekly'?' selected':''}>Каждую неделю</option>
-      <option value="monthly"${c.recurring==='monthly'?' selected':''}>Каждый месяц</option>
-    </select>`;
+  setCardModalTitle('Редактировать задачу',c.col);
+  document.getElementById('modal-body').innerHTML=cardFormHTML(c,allColumns.filter(x=>x.proj_id===c.proj_id),{showProj:true});
   document.getElementById('modal-left-btn').innerHTML=
     `<button class="btn btn-danger" onclick="delCardGlobal('${cardId}')">Удалить</button>`;
   openModal();setTimeout(()=>document.getElementById('inp-ctitle').focus(),60);
 }
 
-function refreshColOpts(projId, currentCol){
+// Новая задача из календаря обзора (с выбором проекта и готовым дедлайном)
+async function openOvNewCard(deadline){
+  if(!projects.length){alert('Сначала создайте проект');return;}
+  const projId=ovFilterProj!=='all'?ovFilterProj:projects[0].id;
+  await ensureColumns(projId);
   const projCols=allColumns.filter(x=>x.proj_id===projId);
-  const sel=document.getElementById('inp-ccol');
-  sel.innerHTML=projCols.map(col=>`<option value="${col.id}"${col.id===currentCol?' selected':''}>${col.title}</option>`).join('');
+  editingId=null;editingProjId=projId;modalMode='card-ov';targetCol=projCols.sort((a,b)=>a.position-b.position)[0]?.id;
+  setCardModalTitle('Новая задача',null);
+  document.getElementById('modal-body').innerHTML=cardFormHTML({proj_id:projId,col:targetCol,deadline,priority:'mid',isNew:true},projCols,{showProj:true});
+  document.getElementById('modal-left-btn').innerHTML='';
+  openModal();setTimeout(()=>document.getElementById('inp-ctitle').focus(),60);
+}
+
+async function ensureColumns(projId){
+  if(!allColumns.some(c=>c.proj_id===projId))await initDefaultColumns(projId);
+}
+
+async function refreshColOpts(projId){
+  await ensureColumns(projId);
+  const projCols=allColumns.filter(x=>x.proj_id===projId);
+  const cur=document.getElementById('inp-ccol')?.value;
+  const curCol=allColumns.find(x=>x.id===cur);
+  // При смене проекта стараемся сохранить статус с тем же названием
+  const same=curCol&&projCols.find(x=>x.title===curCol.title);
+  const wrap=document.getElementById('status-wrap');
+  wrap.innerHTML=statusPickerHTML(projCols,same?same.id:null);
 }
 
 async function delCardGlobal(id){
@@ -722,6 +870,7 @@ async function openProject(projId,name,color){
   columns=allColumns.filter(c=>c.proj_id===projId).sort((a,b)=>a.position-b.position);
   if(!columns.length){
     await initDefaultColumns(projId);
+    columns=allColumns.filter(c=>c.proj_id===projId).sort((a,b)=>a.position-b.position);
   }
   renderBoard();
 }
@@ -730,7 +879,7 @@ async function initDefaultColumns(projId){
   const defs=['Бэклог','На этой неделе','Сегодня','Готово'];
   for(let i=0;i<defs.length;i++){
     const res=await api('columns','POST',{proj_id:projId,title:defs[i],position:i});
-    columns.push(res[0]);allColumns.push(res[0]);
+    allColumns.push(res[0]);
   }
 }
 
@@ -950,10 +1099,10 @@ function openColModal(){
   openModal();setTimeout(()=>document.getElementById('inp-colname').focus(),60);
 }
 
-function openCardModal(colId){
+function openCardModal(colId,deadline){
   modalMode='card';editingId=null;targetCol=colId||(columns[0]?.id);
-  document.getElementById('modal-title').textContent='Новая задача';
-  document.getElementById('modal-body').innerHTML=cardFormHTML(null,columns);
+  setCardModalTitle('Новая задача',null);
+  document.getElementById('modal-body').innerHTML=cardFormHTML(deadline?{col:targetCol,deadline,priority:'mid',isNew:true}:null,columns);
   document.getElementById('modal-left-btn').innerHTML='';
   openModal();setTimeout(()=>document.getElementById('inp-ctitle').focus(),60);
 }
@@ -961,28 +1110,37 @@ function openCardModal(colId){
 function openEditCardModal(cardId){
   const c=cards.find(x=>x.id===cardId);if(!c)return;
   modalMode='card';editingId=cardId;targetCol=c.col;
-  document.getElementById('modal-title').textContent='Редактировать задачу';
+  setCardModalTitle('Редактировать задачу',c.col);
   document.getElementById('modal-body').innerHTML=cardFormHTML(c,columns);
   document.getElementById('modal-left-btn').innerHTML=
     `<button class="btn btn-danger" onclick="delCard('${cardId}')">Удалить</button>`;
   openModal();setTimeout(()=>document.getElementById('inp-ctitle').focus(),60);
 }
 
-function cardFormHTML(c,cols){
-  const colOpts=cols.map(col=>`<option value="${col.id}"${(c?c.col:targetCol)===col.id?' selected':''}>${col.title}</option>`).join('');
+function setCardModalTitle(text,colId){
+  const col=colId?allColumns.find(x=>x.id===colId):null;
+  const sc=col?statusColor(col):'';
+  document.getElementById('modal-title').innerHTML=esc(text)+
+    (col?`<span class="modal-status-badge" style="color:${sc};background:color-mix(in srgb,${sc} 15%,transparent)"><span style="width:6px;height:6px;border-radius:50%;background:${sc}"></span>${esc(col.title)}</span>`:'');
+}
+
+function cardFormHTML(c,cols,opts={}){
+  const projOpts=opts.showProj?projects.map(p=>`<option value="${p.id}"${c?.proj_id===p.id?' selected':''}>${esc(p.name)}</option>`).join(''):'';
   return`
     <label>Заголовок</label>
-    <input id="inp-ctitle" type="text" placeholder="Что нужно сделать?" value="${c?c.title:''}" />
+    <input id="inp-ctitle" type="text" placeholder="Что нужно сделать?" value="${c?esc(c.title||''):''}" />
+    <label>Статус</label>
+    <div id="status-wrap">${statusPickerHTML(cols,c?c.col:targetCol)}</div>
+    ${opts.showProj?`<label>Проект</label>
+    <select id="inp-cproj" onchange="refreshColOpts(this.value)">${projOpts}</select>`:''}
     <label>Описание</label>
-    <textarea id="inp-cdesc" placeholder="Необязательно...">${c?c.description||'':''}</textarea>
+    <textarea id="inp-cdesc" placeholder="Необязательно...">${c?esc(c.description||''):''}</textarea>
     <label>Приоритет</label>
     <select id="inp-cpri">
       <option value="low"${c?.priority==='low'?' selected':''}>Низкий</option>
       <option value="mid"${(!c||c.priority==='mid')?' selected':''}>Средний</option>
       <option value="high"${c?.priority==='high'?' selected':''}>Высокий</option>
     </select>
-    <label>Статус</label>
-    <select id="inp-ccol">${colOpts}</select>
     <label>Дедлайн</label>
     <input id="inp-deadline" type="date" value="${c?.deadline||''}" />
     <label>Повторение</label>
@@ -1014,7 +1172,7 @@ async function saveModal(){
   } else if(modalMode==='card'||modalMode==='card-ov'){
     const title=document.getElementById('inp-ctitle').value.trim();if(!title)return;
     const projId=modalMode==='card-ov'?(document.getElementById('inp-cproj')?.value||editingProjId):currentProj;
-    const newCol=document.getElementById('inp-ccol').value;
+    const newCol=document.getElementById('inp-ccol').value;if(!newCol)return;
     const prevCard=editingId?allCards.find(c=>c.id===editingId):null;
     const body={proj_id:projId,title,
       description:document.getElementById('inp-cdesc').value.trim(),
@@ -1034,8 +1192,9 @@ async function saveModal(){
       }
     } else {
       const res=await api('cards','POST',body);
-      allCards.push(res[0]);cards.push(res[0]);
+      allCards.push(res[0]);
     }
+    if(currentProj)cards=allCards.filter(c=>c.proj_id===currentProj);
     if(modalMode==='card')renderBoard();
     renderOverview();
     if(currentView==='calendar')renderCalendar();
@@ -1068,9 +1227,11 @@ function renderCalendar(){
     el.innerHTML=`<div class="cal-day-num">${dn}</div>`;
     if(isCur){
       const ds=year+'-'+String(month+1).padStart(2,'0')+'-'+String(dn).padStart(2,'0');
+      el.title='Нажмите, чтобы добавить задачу на этот день';
+      el.onclick=()=>openCardModal(null,ds);
       cards.filter(c=>c.deadline===ds).forEach(c=>{
         const t=document.createElement('div');t.className='cal-task p-'+c.priority;
-        t.textContent=c.title;t.onclick=()=>openEditCardModal(c.id);el.appendChild(t);
+        t.textContent=c.title;t.onclick=e=>{e.stopPropagation();openEditCardModal(c.id);};el.appendChild(t);
       });
     }
     grid.appendChild(el);
