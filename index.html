@@ -519,6 +519,18 @@ function statusPickerHTML(cols,selectedId){
   <input type="hidden" id="inp-ccol" value="${sel}" />`;
 }
 
+const PRIORITIES=[['high','Высокий','#ff5f5f'],['mid','Средний','#f5a623'],['low','Низкий','#4caf7d']];
+function priorityPickerHTML(sel){
+  return `<div class="status-picker" id="priority-picker">${PRIORITIES.map(([v,label,color])=>
+    `<button type="button" class="status-chip${v===sel?' active':''}" style="--sc:${color}" data-pri="${v}" onclick="pickPriority('${v}')"><span class="sc-dot"></span>${label}</button>`
+  ).join('')}</div>
+  <input type="hidden" id="inp-cpri" value="${sel}" />`;
+}
+function pickPriority(v){
+  document.getElementById('inp-cpri').value=v;
+  document.querySelectorAll('#priority-picker .status-chip').forEach(b=>b.classList.toggle('active',b.dataset.pri===v));
+}
+
 function pickStatus(colId){
   document.getElementById('inp-ccol').value=colId;
   document.querySelectorAll('#status-picker .status-chip').forEach(b=>b.classList.toggle('active',b.dataset.col===colId));
@@ -1136,11 +1148,7 @@ function cardFormHTML(c,cols,opts={}){
     <label>Описание</label>
     <textarea id="inp-cdesc" placeholder="Необязательно...">${c?esc(c.description||''):''}</textarea>
     <label>Приоритет</label>
-    <select id="inp-cpri">
-      <option value="low"${c?.priority==='low'?' selected':''}>Низкий</option>
-      <option value="mid"${(!c||c.priority==='mid')?' selected':''}>Средний</option>
-      <option value="high"${c?.priority==='high'?' selected':''}>Высокий</option>
-    </select>
+    ${priorityPickerHTML(c?.priority||'mid')}
     <label>Дедлайн</label>
     <input id="inp-deadline" type="date" value="${c?.deadline||''}" />
     <label>Повторение</label>
